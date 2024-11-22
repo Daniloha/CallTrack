@@ -1,0 +1,24 @@
+stages:
+  - test
+  - build
+
+variables:
+  DOTNET_SDK_IMAGE: mcr.microsoft.com/dotnet/sdk:8.0
+
+run-tests:
+  stage: test
+  image: $DOTNET_SDK_IMAGE
+  script:
+    - dotnet restore
+    - dotnet test --logger:"console;verbosity=detailed"
+
+build-app:
+  stage: build
+  image: $DOTNET_SDK_IMAGE
+  script:
+    - dotnet restore
+    - dotnet build --configuration Release
+    - dotnet publish -c Release -o ./publish
+  artifacts:
+    paths:
+      - ./publish
