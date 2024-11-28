@@ -2,8 +2,8 @@
 {
     public class Reasons
     {
-        public long ReasonId { get; set; }
+        public long reasonId { get; set; }
         public string description { get; set; } = string.Empty;
-        public Calls calls { get; set; } = new Calls();
+        public Calls call { get; set; } = new Calls();
     }
 }

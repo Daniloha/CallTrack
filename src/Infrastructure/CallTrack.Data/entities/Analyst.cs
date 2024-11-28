@@ -6,6 +6,8 @@
         public int statusAnalyst { get; set; }
         public string analystName { get; set; } = string.Empty;
         public ICollection<Calls> calls { get; set; } = new List<Calls>();
+        public Users user { get; set; } = new Users();
+        public Managers manager { get; set; } = new Managers();
 
 
     }

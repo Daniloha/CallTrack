@@ -13,11 +13,11 @@ namespace CallTrack.Data.entities.EntitiesConfiguration
 
             // Define a chave primária e renomeia a coluna
             builder.
-                HasKey(x => x.ReasonId).
+                HasKey(x => x.reasonId).
                 HasName("reason_id");
 
             builder.
-                Property(x => x.ReasonId).
+                Property(x => x.reasonId).
                 HasColumnName("reason_id").
                 IsRequired();
 
@@ -30,9 +30,15 @@ namespace CallTrack.Data.entities.EntitiesConfiguration
 
             // Define o relacionamento com a entidade Calls
             builder.
-                HasOne(x => x.calls).
+                HasOne(x => x.call).
                 WithMany(x => x.reasons).
-                HasForeignKey(x => x.ReasonId);
+                HasForeignKey(x => x.reasonId);
+
+            //Ignora as propriedades na serialização JSON
+            //Equivalente a data annotation [Json Ignore]
+            builder.
+                Ignore(x => x.call);
+
         }
     }
 }

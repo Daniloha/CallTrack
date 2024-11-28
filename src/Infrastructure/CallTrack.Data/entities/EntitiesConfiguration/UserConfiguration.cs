@@ -12,10 +12,10 @@ namespace CallTrack.Data.entities.EntitiesConfiguration
 
             // Define a chave primária e renomeia a coluna
             builder.
-                HasKey(x => x.UserId);
+                HasKey(x => x.userId);
 
             builder.
-                Property(x => x.UserId).
+                Property(x => x.userId).
                 HasColumnName("user_id").
                 IsRequired();
 
@@ -24,7 +24,8 @@ namespace CallTrack.Data.entities.EntitiesConfiguration
                 Property(x => x.email).
                 HasColumnName("user_email").
                 HasMaxLength(100).
-                IsRequired();
+                IsRequired().
+                HasAnnotation("Relational:CheckConstraint", "email LIKE '%@%.%'");
 
             // Define o tamanho da coluna password, torna obrigatorio e renomeia a coluna
             builder.
@@ -35,11 +36,22 @@ namespace CallTrack.Data.entities.EntitiesConfiguration
 
             // Define o relacionamento com a entidade Managers
             builder.
-                HasMany(x => x.managers);
+                HasOne(x => x.manager).
+                WithOne(x => x.user).
+                HasForeignKey<Managers>(x => x.managerId);
 
             // Define o relacionamento com a entidade Analysts
             builder.
-                HasMany(x => x.analysts);
+                HasOne(x => x.analyst).
+                WithOne(x => x.user).
+                HasForeignKey<Analyst>(x => x.analystId);
+
+            //Ignora as propriedades na serialização JSON
+            //Equivalente a data annotation [Json Ignore]
+            builder.
+                Ignore(x => x.analyst);
+            builder.
+                Ignore(x => x.manager);
         }
     }
 }

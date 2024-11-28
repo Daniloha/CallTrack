@@ -4,6 +4,7 @@ using CallTrack.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CallTrack.Data.Migrations
 {
     [DbContext(typeof(CallTrackContext))]
-    partial class CallTrackContextModelSnapshot : ModelSnapshot
+    [Migration("20241128005521_FixUpdateInitialMigration")]
+    partial class FixUpdateInitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,8 +74,7 @@ namespace CallTrack.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("closeDate")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("call_close_date");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("code")
                         .IsRequired()
@@ -87,8 +89,7 @@ namespace CallTrack.Data.Migrations
                         .HasColumnName("call_observation");
 
                     b.Property<DateTime>("openDate")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("call_open_date");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("status")
                         .ValueGeneratedOnAdd()

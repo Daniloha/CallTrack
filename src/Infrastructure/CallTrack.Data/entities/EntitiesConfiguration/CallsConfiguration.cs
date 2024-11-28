@@ -28,17 +28,19 @@ namespace CallTrack.Data.entities.EntitiesConfiguration
 
             // Define o relacionamento com a entidade Reasons
             builder.HasMany(x => x.reasons)
-                   .WithOne(x => x.calls)
-                   .HasForeignKey(x => x.ReasonId);
+                   .WithOne(x => x.call)
+                   .HasForeignKey(x => x.reasonId);
 
             //Define a propriedade open_date como obrigatório
             builder.
-                Property(x => x.open_date).
+                Property(x => x.openDate).
+                HasColumnName("call_open_date").
                 IsRequired();
 
             //Define a propriedade close_date como obrigatório
             builder.
-                Property(x => x.close_date).
+                Property(x => x.closeDate).
+                HasColumnName("call_close_date").
                 IsRequired();
 
             //Define a propriedade type como obrigatório, com valor padrão 0 e renomeia a coluna
@@ -67,6 +69,13 @@ namespace CallTrack.Data.entities.EntitiesConfiguration
                 HasOne(x => x.analyst).
                 WithMany(x => x.calls).
                 HasForeignKey(x => x.callId);
+
+            //Ignora as propriedades na serialização JSON
+            //Equivalente a data annotation [Json Ignore]
+            builder.
+                Ignore(x => x.analyst);
+            builder.
+                Ignore(x => x.reasons);
         }
     }
 }

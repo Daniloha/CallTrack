@@ -39,7 +39,6 @@ namespace CallTrack.Data.entities.EntitiesConfiguration
 
             //Define o relacionamento com a entidade Calls
             builder.
-                ToTable("analysts").
                 HasMany(x => x.calls).
                 WithOne(x => x.analyst).
                 HasForeignKey(x => x.callId);
@@ -49,6 +48,29 @@ namespace CallTrack.Data.entities.EntitiesConfiguration
                 Property(x => x.statusAnalyst).
                 HasDefaultValue(4).
                 IsRequired();
+
+            //Define o relacionamento com a entidade Users
+            builder.
+                HasOne(x => x.user).
+                WithOne(x => x.analyst).
+                HasForeignKey<Analyst>(x => x.analystId);
+
+            //Define o relacionamento com a entidade Managers
+            builder.
+                HasOne(x => x.manager).
+                WithMany(x => x.analysts).
+                HasForeignKey(x => x.analystId);
+
+            //Ignora as propriedades na serialização JSON
+            //Equivalente a data annotation [Json Ignore]
+            builder.
+                Ignore(x => x.calls);
+            builder.
+                Ignore(x => x.manager);
+            builder.
+                Ignore(x => x.user);
+                
+
 
         }
     }
