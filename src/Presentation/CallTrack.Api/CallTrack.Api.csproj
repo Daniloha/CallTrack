@@ -8,16 +8,26 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Domain\CallTrack.Domain\CallTrack.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\CallTrack.Data\CallTrack.Data.csproj" />
     <ProjectReference Include="..\..\Shareable\CallTrack.Share\CallTrack.Share.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="endpoints\" />
-    <Folder Include="extensions\" />
   </ItemGroup>
 
 </Project>
