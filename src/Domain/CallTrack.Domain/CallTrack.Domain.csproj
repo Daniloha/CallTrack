@@ -10,9 +10,4 @@
     <ProjectReference Include="..\..\Shareable\CallTrack.Share\CallTrack.Share.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="handlers\" />
-    <Folder Include="services\repositories\" />
-  </ItemGroup>
-
 </Project>

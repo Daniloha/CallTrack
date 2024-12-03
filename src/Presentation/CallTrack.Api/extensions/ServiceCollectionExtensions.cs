@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Reflection;
 using CallTrack.Data;
+using CallTrack.Data.repositories;
+using CallTrack.Data.repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
+
 
 
 namespace CallTrack.Api.extensions
@@ -32,6 +36,13 @@ namespace CallTrack.Api.extensions
                 );
 
             return builder;
+        }
+
+        public static IServiceCollection AddDependencies(this IServiceCollection services)
+        {
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            return services;
         }
     }
 }
