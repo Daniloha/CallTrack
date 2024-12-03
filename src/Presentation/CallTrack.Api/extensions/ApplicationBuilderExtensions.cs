@@ -21,7 +21,7 @@ public static class ApplicationBuilderExtensions
         app.UseCors(p =>
         {
             p.AllowAnyOrigin(); //Permitir qualquer origem
-            p.WithMethods("GET"); // Métodos permitidos
+            p.AllowAnyMethod(); // Métodos permitidos(Todos)
             p.AllowAnyHeader(); //Permitir qualquer cabeçalho
         });
         return app;
