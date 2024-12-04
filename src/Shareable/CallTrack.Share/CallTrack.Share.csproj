@@ -9,8 +9,6 @@
   <ItemGroup>
     <Folder Include="enums\" />
     <Folder Include="config\" />
-    <Folder Include="vos\" />
-    <Folder Include="responses\" />
   </ItemGroup>
 
   <ItemGroup>

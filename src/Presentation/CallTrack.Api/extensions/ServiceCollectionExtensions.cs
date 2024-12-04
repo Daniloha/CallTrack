@@ -3,6 +3,8 @@ using System.Reflection;
 using CallTrack.Data;
 using CallTrack.Data.repositories;
 using CallTrack.Data.repositories.Implementations;
+using CallTrack.Domain.services.Mappings;
+using CallTrack.Domain.services.repositories;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -42,6 +44,7 @@ namespace CallTrack.Api.extensions
         {
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            services.AddAutoMapper(typeof(CallProfile));
             return services;
         }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CallTrack.Share.dtos
 {
-    public class CallsDTO
+    public class GetCallsDTO
     {
         public long callId { get; set; }
         public int reasonsQuantity { get; set; } 
