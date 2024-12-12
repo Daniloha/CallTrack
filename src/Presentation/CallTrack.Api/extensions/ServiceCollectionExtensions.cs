@@ -1,11 +1,9 @@
-﻿using System;
-using System.Reflection;
-using CallTrack.Data;
-using CallTrack.Data.repositories;
+﻿using CallTrack.Data;
 using CallTrack.Data.repositories.Implementations;
-using CallTrack.Domain.services.Mappings;
+using CallTrack.Domain.services.Mappings.CallsProfile;
 using CallTrack.Domain.services.repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 
 
@@ -42,9 +40,24 @@ namespace CallTrack.Api.extensions
 
         public static IServiceCollection AddDependencies(this IServiceCollection services)
         {
-            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-            services.AddAutoMapper(typeof(CallProfile));
+            services.AddAutoMapper(cfg =>
+            {
+                //cfg.AddProfile(typeof(GetCallProfile));
+                cfg.AddProfile(typeof(PostCallProfile));
+
+            });
+
+        //Validação das configurações do AutoMapper
+        //var serviceProvider = services.BuildServiceProvider();
+        //var mapperConfig = serviceProvider.GetRequiredService<AutoMapper.IConfigurationProvider>();
+        //mapperConfig.AssertConfigurationIsValid();
+
+        services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+
+            services.AddMediatR(cfg => 
+                        cfg.RegisterServicesFromAssembly(Assembly.Load("CallTrack.Domain")));
+
+
             return services;
         }
     }

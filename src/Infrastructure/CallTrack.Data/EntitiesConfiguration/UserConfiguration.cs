@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CallTrack.Domain.entities;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
-namespace CallTrack.Domain.entities.EntitiesConfiguration;
+namespace CallTrack.Data.EntitiesConfiguration;
 
-internal class UserConfiguration : IEntityTypeConfiguration<Users>
+internal class UserConfiguration :AbstractValidator<Users>, IEntityTypeConfiguration<Users>
 {
     public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Users> builder)
     {
@@ -12,45 +14,49 @@ internal class UserConfiguration : IEntityTypeConfiguration<Users>
 
         // Define a chave primária e renomeia a coluna
         builder.
-            HasKey(x => x.userId);
+            HasKey(x => x.UserId);
 
         builder.
-            Property(x => x.userId).
+            Property(x => x.UserId).
             HasColumnName("user_id").
             IsRequired();
 
         // Define o tamanho da coluna name, torna obrigatorio e renomeia a coluna
         builder.
-            Property(x => x.email).
+            Property(x => x.Email).
             HasColumnName("user_email").
             HasMaxLength(100).
-            IsRequired().
-            HasAnnotation("Relational:CheckConstraint", "email LIKE '%@%.%'");
+            IsRequired();
+
+        RuleFor(x => x.Email)
+            .EmailAddress()
+            .NotEmpty()
+            .WithMessage("Email inválido ou vazio.");
 
         // Define o tamanho da coluna password, torna obrigatorio e renomeia a coluna
         builder.
-            Property(x => x.password).
+            Property(x => x.Password).
             HasColumnName("user_password").
             HasMaxLength(100).
             IsRequired();
 
         // Define o relacionamento com a entidade Managers
         builder.
-            HasOne(x => x.manager).
-            WithOne(x => x.user).
-            HasForeignKey<Managers>(x => x.managerId);
+            HasOne(x => x.Manager).
+            WithOne(x => x.User).
+            HasForeignKey<Managers>(x => x.ManagerId);
 
         // Define o relacionamento com a entidade Analysts
         builder.
-            HasOne(x => x.analyst).
-            WithOne(x => x.user).
-            HasForeignKey<Analyst>(x => x.analystId);
+            HasOne(x => x.Analyst).
+            WithOne(x => x.User).
+            HasForeignKey<Analyst>(x => x.AnalystId);
 
         //Ignora as propriedades na serialização JSON
         //Equivalente a data annotation [Json Ignore]
         builder.
-            Ignore(x => x.analyst);
+            Ignore(x => x.Analyst);
         builder.
-            Ignore(x => x.manager);
+            Ignore(x => x.Manager);
     }
 }

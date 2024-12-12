@@ -14,12 +14,13 @@ public class GenericRepository<T> : IRepository<T> where T : class
     {
         _context = context;
     }
-    public  T Create(T entity)
+    public async Task<T> CreateAsync(T entity)
     {
-        _context.Set<T>().Add(entity);
-        _context.SaveChanges();
-        return entity;
+        await _context.Set<T>().AddAsync(entity); // Adiciona a entidade de forma assíncrona
+        await _context.SaveChangesAsync(); // Salva as mudanças de forma assíncrona
+        return entity; // Retorna a entidade criada
     }
+
 
     public T Delete(T entity)
     {

@@ -3,12 +3,14 @@
  * -> Configuração da entidade Analyst para o banco de dados.
  */
 
+using CallTrack.Domain.entities;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CallTrack.Domain.entities.EntitiesConfiguration;
+namespace CallTrack.Data.EntitiesConfiguration;
 
-internal class AnalystConfiguration : IEntityTypeConfiguration<Analyst>
+internal class AnalystConfiguration : AbstractValidator<Analyst>, IEntityTypeConfiguration<Analyst> 
 {
     public void Configure(EntityTypeBuilder<Analyst> builder)
     {
@@ -18,57 +20,75 @@ internal class AnalystConfiguration : IEntityTypeConfiguration<Analyst>
 
         //Define a chave primária e renomeia a coluna.
         builder.
-            HasKey(x => x.analystId);
+            HasKey(x => x.AnalystId);
 
         builder.
-            Property(x => x.analystId).
+            Property(x => x.UserId).
+            HasColumnName("user_id").
+            IsRequired();
+
+        builder.
+            Property(x => x.ManagerId).
+            HasColumnName("manager_id").
+            IsRequired();
+
+        builder.
+            Property(x => x.AnalystId).
             HasColumnName("analyst_id").
             IsRequired();
 
         //Define o tamanho da coluna analuystName, torna obrigatorio e renomeia a coluna.
         builder.
-            Property(x => x.analystName).
+            Property(x => x.AnalystName).
             HasColumnName("analyst_name").
             HasMaxLength(100).
             IsRequired();
         //Renomeia a coluna statusAnalyst, torna obrigatorio.
         builder.
-            Property(x => x.statusAnalyst).
+            Property(x => x.StatusAnalyst).
             HasColumnName("analyst_status").
             IsRequired();
 
         //Define o relacionamento com a entidade Calls
         builder.
-            HasMany(x => x.calls).
-            WithOne(x => x.analyst).
-            HasForeignKey(x => x.callId);
+            HasMany(x => x.Calls).
+            WithOne(x => x.Analyst).
+            HasForeignKey(x => x.CallId);
 
         //Define o valor padrao para a coluna statusAnalyst e torna obrigatorio.
         builder.
-            Property(x => x.statusAnalyst).
+            Property(x => x.StatusAnalyst).
             HasDefaultValue(4).
             IsRequired();
 
         //Define o relacionamento com a entidade Users
         builder.
-            HasOne(x => x.user).
-            WithOne(x => x.analyst).
-            HasForeignKey<Analyst>(x => x.analystId);
+            HasOne(x => x.User).
+            WithOne(x => x.Analyst).
+            HasForeignKey<Analyst>(x => x.UserId);
 
         //Define o relacionamento com a entidade Managers
         builder.
-            HasOne(x => x.manager).
-            WithMany(x => x.analysts).
-            HasForeignKey(x => x.analystId);
+            HasOne(x => x.Manager).
+            WithMany(x => x.Analysts).
+            HasForeignKey(x => x.ManagerId);
 
         //Ignora as propriedades na serialização JSON
         //Equivalente a data annotation [Json Ignore]
         builder.
-            Ignore(x => x.calls);
+            Ignore(x => x.Calls);
         builder.
-            Ignore(x => x.manager);
+            Ignore(x => x.Manager);
         builder.
-            Ignore(x => x.user);
+            Ignore(x => x.User);
+
+        RuleFor(x => x.AnalystName).
+            NotEmpty().
+            WithMessage("O nome do analista é obrigatório.");
+
+        RuleFor(x => x.StatusAnalyst).
+            NotEmpty().
+            WithMessage("O status do analista é obrigatório.");
             
 
 

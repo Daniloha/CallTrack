@@ -1,13 +1,18 @@
 ﻿namespace CallTrack.Domain.entities;
 public class Calls
 {
-    public long callId { get; set; }
-    public ICollection<Reasons> reasons { get; set; } = new List<Reasons>();
-    public string observation { get; set; } = string.Empty;
-    public DateTime closeDate { get; set; }
-    public DateTime openDate { get; set; }
-    public int type { get; set; }
-    public string code { get; set; } = string.Empty;
-    public int status { get; set; }
-    public Analyst analyst { get; set; } = new Analyst();
+    public long CallId { get; set; }
+
+    // Foreign key de Reasons para Calls
+    public long ReasonId { get; set; }
+    public Reasons? Reasons { get; set; }
+    public string Observation { get; set; } = string.Empty;
+    public DateTime CloseDate { get; set; }
+    public DateTime OpenDate { get; set; }
+    public int Type { get; set; }
+    public string Code { get; set; } = string.Empty;
+    public int Status { get; set; }
+    // Foreign key de Analyst
+    public long AnalystId { get; set; }
+    public Analyst? Analyst { get; set; }
 }

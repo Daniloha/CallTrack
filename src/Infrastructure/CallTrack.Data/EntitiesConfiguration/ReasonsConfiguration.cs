@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CallTrack.Domain.entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CallTrack.Domain.entities.EntitiesConfiguration;
+namespace CallTrack.Data.EntitiesConfiguration;
 
 internal class ReasonsConfiguration : IEntityTypeConfiguration<Reasons>
 {
@@ -13,31 +14,31 @@ internal class ReasonsConfiguration : IEntityTypeConfiguration<Reasons>
 
         // Define a chave primária e renomeia a coluna
         builder.
-            HasKey(x => x.reasonId).
+            HasKey(x => x.ReasonId).
             HasName("reason_id");
 
         builder.
-            Property(x => x.reasonId).
+            Property(x => x.ReasonId).
             HasColumnName("reason_id").
             IsRequired();
 
         // Define o tamanho da coluna description, torna obrigatorio e renomeia a coluna
         builder.
-            Property(x => x.description).
+            Property(x => x.Description).
             HasColumnName("reason_description").
             HasMaxLength(500).
             IsRequired();
 
         // Define o relacionamento com a entidade Calls
         builder.
-            HasOne(x => x.call).
-            WithMany(x => x.reasons).
-            HasForeignKey(x => x.reasonId);
+            HasMany(x => x.Call).
+            WithOne(x => x.Reasons).
+            HasForeignKey(x => x.CallId);
 
         //Ignora as propriedades na serialização JSON
         //Equivalente a data annotation [Json Ignore]
         builder.
-            Ignore(x => x.call);
+            Ignore(x => x.Call);
 
     }
 }
