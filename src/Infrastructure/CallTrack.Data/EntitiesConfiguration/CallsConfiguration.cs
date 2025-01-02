@@ -36,13 +36,12 @@ namespace CallTrack.Data.EntitiesConfiguration
 
             // Define o relacionamento com a entidade Reasons
             builder.HasOne(x => x.Reasons)
-                   .WithMany()
-                   .HasForeignKey(x => x.ReasonId)
-                   .OnDelete(DeleteBehavior.Restrict); // Define o comportamento na exclusão
+                   .WithMany(x => x.Calls)
+                   .HasForeignKey(x => x.ReasonId);
 
             // Define o relacionamento com a entidade Analyst
             builder.HasOne(x => x.Analyst)
-                   .WithMany()
+                   .WithMany(x => x.Calls)
                    .HasForeignKey(x => x.AnalystId)
                    .OnDelete(DeleteBehavior.Restrict); // Define o comportamento na exclusão
 

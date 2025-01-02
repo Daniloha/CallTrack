@@ -4,6 +4,7 @@ using CallTrack.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CallTrack.Data.Migrations
 {
     [DbContext(typeof(CallTrackContext))]
-    partial class CallTrackContextModelSnapshot : ModelSnapshot
+    [Migration("20241226124856_NewMigration")]
+    partial class NewMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,6 +74,9 @@ namespace CallTrack.Data.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("analyst_id");
 
+                    b.Property<long?>("AnalystId1")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("CloseDate")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("call_close_date");
@@ -111,6 +117,8 @@ namespace CallTrack.Data.Migrations
 
                     b.HasIndex("AnalystId");
 
+                    b.HasIndex("AnalystId1");
+
                     b.ToTable("calls", (string)null);
                 });
 
@@ -130,8 +138,7 @@ namespace CallTrack.Data.Migrations
                         .HasColumnName("manager_name");
 
                     b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
+                        .HasColumnType("bigint");
 
                     b.HasKey("ManagerId");
 
@@ -408,9 +415,8 @@ namespace CallTrack.Data.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("UserId"));
 
-                    b.Property<long?>("AnalystId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("analyst_id");
+                    b.Property<long>("AnalystId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -418,9 +424,8 @@ namespace CallTrack.Data.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("user_email");
 
-                    b.Property<long?>("ManagerId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("manager_id");
+                    b.Property<long>("ManagerId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -457,13 +462,17 @@ namespace CallTrack.Data.Migrations
             modelBuilder.Entity("CallTrack.Domain.entities.Calls", b =>
                 {
                     b.HasOne("CallTrack.Domain.entities.Analyst", "Analyst")
-                        .WithMany("Calls")
+                        .WithMany()
                         .HasForeignKey("AnalystId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CallTrack.Domain.entities.Reasons", "Reasons")
+                    b.HasOne("CallTrack.Domain.entities.Analyst", null)
                         .WithMany("Calls")
+                        .HasForeignKey("AnalystId1");
+
+                    b.HasOne("CallTrack.Domain.entities.Reasons", "Reasons")
+                        .WithMany("Call")
                         .HasForeignKey("CallId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -496,14 +505,16 @@ namespace CallTrack.Data.Migrations
 
             modelBuilder.Entity("CallTrack.Domain.entities.Reasons", b =>
                 {
-                    b.Navigation("Calls");
+                    b.Navigation("Call");
                 });
 
             modelBuilder.Entity("CallTrack.Domain.entities.Users", b =>
                 {
-                    b.Navigation("Analyst");
+                    b.Navigation("Analyst")
+                        .IsRequired();
 
-                    b.Navigation("Manager");
+                    b.Navigation("Manager")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

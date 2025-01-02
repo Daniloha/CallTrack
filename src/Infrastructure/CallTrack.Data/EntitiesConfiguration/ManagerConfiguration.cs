@@ -21,6 +21,11 @@ internal class ManagerConfiguration : IEntityTypeConfiguration<Managers>
             HasColumnName("manager_id").
             IsRequired();
 
+        builder.
+            Property(x => x.UserId).
+            HasColumnName("user_id").
+            IsRequired();
+
 
         // Define o tamanho da coluna ManagerName, torna obrigatorio e renomeia a coluna
         builder.
@@ -30,23 +35,17 @@ internal class ManagerConfiguration : IEntityTypeConfiguration<Managers>
             IsRequired();
 
         // Define o relacionamento com a entidade Analysts
-        builder.
-            HasMany(x => x.Analysts).
-            WithOne(x => x.Manager).
-            HasForeignKey(x => x.AnalystId);
+        builder
+            .HasMany(x => x.Analysts)
+            .WithOne(x => x.Manager)
+            .HasForeignKey(x => x.ManagerId);
 
         // Define o relacionamento com a entidade Users
-        builder.
-            HasOne(x => x.User).
-            WithOne(x => x.Manager).
-            HasForeignKey<Managers>(x => x.ManagerId);
+        builder
+            .HasOne(x => x.User)
+            .WithOne(x => x.Manager)
+            .HasForeignKey<Managers>(x => x.UserId);
 
-        //Ignora as propriedades na serialização JSON
-        //Equivalente a data annotation [Json Ignore]
-        builder.
-            Ignore(x => x.Analysts);
-        builder.
-            Ignore(x => x.User);
 
     }
 }

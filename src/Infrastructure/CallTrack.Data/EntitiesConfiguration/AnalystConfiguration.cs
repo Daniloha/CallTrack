@@ -62,25 +62,20 @@ internal class AnalystConfiguration : AbstractValidator<Analyst>, IEntityTypeCon
             IsRequired();
 
         //Define o relacionamento com a entidade Users
-        builder.
-            HasOne(x => x.User).
-            WithOne(x => x.Analyst).
-            HasForeignKey<Analyst>(x => x.UserId);
+        builder
+            .HasOne(x => x.User)
+            .WithOne(x => x.Analyst)
+            .HasForeignKey<Analyst>(x => x.UserId)
+            .HasConstraintName("user_id");
+
 
         //Define o relacionamento com a entidade Managers
-        builder.
-            HasOne(x => x.Manager).
-            WithMany(x => x.Analysts).
-            HasForeignKey(x => x.ManagerId);
+        builder
+            .HasOne(x => x.Manager)
+            .WithMany(x => x.Analysts)
+            .HasForeignKey(x => x.ManagerId)
+            .HasConstraintName("FK_analysts_managers_ManagerId"); // Define explicitamente o nome da FK
 
-        //Ignora as propriedades na serialização JSON
-        //Equivalente a data annotation [Json Ignore]
-        builder.
-            Ignore(x => x.Calls);
-        builder.
-            Ignore(x => x.Manager);
-        builder.
-            Ignore(x => x.User);
 
         RuleFor(x => x.AnalystName).
             NotEmpty().

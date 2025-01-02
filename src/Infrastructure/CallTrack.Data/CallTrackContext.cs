@@ -71,6 +71,7 @@ public class CallTrackContext : DbContext
                 new Reasons { ReasonId = 46, Description = "Sem Limite para Beneficio" },
                 new Reasons { ReasonId = 47, Description = "Erro Sistêmico" }
             );
+
     }
 
 }

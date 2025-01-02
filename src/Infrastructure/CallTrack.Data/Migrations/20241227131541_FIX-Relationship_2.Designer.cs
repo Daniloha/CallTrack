@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CallTrack.Data.Migrations
 {
     [DbContext(typeof(CallTrackContext))]
-    [Migration("20241211021306_SeedReasons")]
-    partial class SeedReasons
+    [Migration("20241227131541_FIX-Relationship_2")]
+    partial class FIXRelationship_2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,7 +41,8 @@ namespace CallTrack.Data.Migrations
                         .HasColumnName("analyst_name");
 
                     b.Property<long>("ManagerId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnName("manager_id");
 
                     b.Property<int>("StatusAnalyst")
                         .ValueGeneratedOnAdd()
@@ -50,13 +51,15 @@ namespace CallTrack.Data.Migrations
                         .HasColumnName("analyst_status");
 
                     b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
 
                     b.HasKey("AnalystId");
 
                     b.HasIndex("ManagerId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("analysts", (string)null);
                 });
@@ -64,14 +67,12 @@ namespace CallTrack.Data.Migrations
             modelBuilder.Entity("CallTrack.Domain.entities.Calls", b =>
                 {
                     b.Property<long>("CallId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnName("call_id");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("CallId"));
-
-                    b.Property<long?>("AnalystId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("AnalystId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("analyst_id");
 
                     b.Property<DateTime>("CloseDate")
                         .HasColumnType("datetime(6)")
@@ -93,11 +94,9 @@ namespace CallTrack.Data.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("call_open_date");
 
-                    b.Property<long?>("ReasonId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("ReasonsReasonId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("ReasonId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("reason_id");
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
@@ -114,8 +113,6 @@ namespace CallTrack.Data.Migrations
                     b.HasKey("CallId");
 
                     b.HasIndex("AnalystId");
-
-                    b.HasIndex("ReasonsReasonId");
 
                     b.ToTable("calls", (string)null);
                 });
@@ -136,11 +133,13 @@ namespace CallTrack.Data.Migrations
                         .HasColumnName("manager_name");
 
                     b.Property<long>("UserId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
 
                     b.HasKey("ManagerId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("managers", (string)null);
                 });
@@ -412,12 +411,19 @@ namespace CallTrack.Data.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("UserId"));
 
+                    b.Property<long?>("AnalystId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("analyst_id");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)")
-                        .HasColumnName("user_email")
-                        .HasAnnotation("Relational:CheckConstraint", "email LIKE '%@%.%'");
+                        .HasColumnName("user_email");
+
+                    b.Property<long?>("ManagerId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("manager_id");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -433,16 +439,18 @@ namespace CallTrack.Data.Migrations
             modelBuilder.Entity("CallTrack.Domain.entities.Analyst", b =>
                 {
                     b.HasOne("CallTrack.Domain.entities.Managers", "Manager")
-                        .WithMany()
+                        .WithMany("Analysts")
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_analysts_managers_ManagerId");
 
                     b.HasOne("CallTrack.Domain.entities.Users", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Analyst")
+                        .HasForeignKey("CallTrack.Domain.entities.Analyst", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("user_id");
 
                     b.Navigation("Manager");
 
@@ -452,13 +460,16 @@ namespace CallTrack.Data.Migrations
             modelBuilder.Entity("CallTrack.Domain.entities.Calls", b =>
                 {
                     b.HasOne("CallTrack.Domain.entities.Analyst", "Analyst")
-                        .WithMany()
+                        .WithMany("Calls")
                         .HasForeignKey("AnalystId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("CallTrack.Domain.entities.Reasons", "Reasons")
-                        .WithMany()
-                        .HasForeignKey("ReasonsReasonId");
+                        .WithMany("Calls")
+                        .HasForeignKey("CallId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Analyst");
 
@@ -468,12 +479,34 @@ namespace CallTrack.Data.Migrations
             modelBuilder.Entity("CallTrack.Domain.entities.Managers", b =>
                 {
                     b.HasOne("CallTrack.Domain.entities.Users", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Manager")
+                        .HasForeignKey("CallTrack.Domain.entities.Managers", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CallTrack.Domain.entities.Analyst", b =>
+                {
+                    b.Navigation("Calls");
+                });
+
+            modelBuilder.Entity("CallTrack.Domain.entities.Managers", b =>
+                {
+                    b.Navigation("Analysts");
+                });
+
+            modelBuilder.Entity("CallTrack.Domain.entities.Reasons", b =>
+                {
+                    b.Navigation("Calls");
+                });
+
+            modelBuilder.Entity("CallTrack.Domain.entities.Users", b =>
+                {
+                    b.Navigation("Analyst");
+
+                    b.Navigation("Manager");
                 });
 #pragma warning restore 612, 618
         }

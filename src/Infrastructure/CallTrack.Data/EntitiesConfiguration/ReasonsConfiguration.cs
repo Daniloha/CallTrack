@@ -31,14 +31,9 @@ internal class ReasonsConfiguration : IEntityTypeConfiguration<Reasons>
 
         // Define o relacionamento com a entidade Calls
         builder.
-            HasMany(x => x.Call).
+            HasMany(x => x.Calls).
             WithOne(x => x.Reasons).
             HasForeignKey(x => x.CallId);
-
-        //Ignora as propriedades na serialização JSON
-        //Equivalente a data annotation [Json Ignore]
-        builder.
-            Ignore(x => x.Call);
 
     }
 }

@@ -28,15 +28,6 @@ namespace CallTrack.Domain.handlers.CallsHandler
                 throw new ArgumentNullException(nameof(request), "Request or Calls cannot be null.");
             }
 
-            // Valide se os dados são válidos antes de continuar
-            foreach (var call in request.Calls)
-            {
-                if (call == null)
-                {
-                    throw new ArgumentException("One of the calls is null.");
-                }
-            }
-
             // Mapeia e salva múltiplas chamadas
             var callEntities = _mapper.Map<IEnumerable<Calls>>(request.Calls);
 
@@ -45,7 +36,7 @@ namespace CallTrack.Domain.handlers.CallsHandler
             foreach (var callEntity in callEntities)
             {
                 var createdEntity = await _repository.CreateAsync(callEntity);
-                createdEntities.Add(createdEntity);
+                createdEntities.Add(callEntity);
             }
 
             // Mapear entidades criadas para resposta

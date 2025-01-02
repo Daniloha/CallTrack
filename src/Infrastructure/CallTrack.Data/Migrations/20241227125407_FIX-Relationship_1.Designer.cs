@@ -4,6 +4,7 @@ using CallTrack.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CallTrack.Data.Migrations
 {
     [DbContext(typeof(CallTrackContext))]
-    partial class CallTrackContextModelSnapshot : ModelSnapshot
+    [Migration("20241227125407_FIX-Relationship_1")]
+    partial class FIXRelationship_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -408,7 +411,7 @@ namespace CallTrack.Data.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("UserId"));
 
-                    b.Property<long?>("AnalystId")
+                    b.Property<long>("AnalystId")
                         .HasColumnType("bigint")
                         .HasColumnName("analyst_id");
 
@@ -418,7 +421,7 @@ namespace CallTrack.Data.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("user_email");
 
-                    b.Property<long?>("ManagerId")
+                    b.Property<long>("ManagerId")
                         .HasColumnType("bigint")
                         .HasColumnName("manager_id");
 
@@ -501,9 +504,11 @@ namespace CallTrack.Data.Migrations
 
             modelBuilder.Entity("CallTrack.Domain.entities.Users", b =>
                 {
-                    b.Navigation("Analyst");
+                    b.Navigation("Analyst")
+                        .IsRequired();
 
-                    b.Navigation("Manager");
+                    b.Navigation("Manager")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

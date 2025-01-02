@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CallTrack.Data.EntitiesConfiguration;
 
-internal class UserConfiguration :AbstractValidator<Users>, IEntityTypeConfiguration<Users>
+public class UserConfiguration :AbstractValidator<Users>, IEntityTypeConfiguration<Users>
 {
     public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Users> builder)
     {
@@ -20,6 +20,14 @@ internal class UserConfiguration :AbstractValidator<Users>, IEntityTypeConfigura
             Property(x => x.UserId).
             HasColumnName("user_id").
             IsRequired();
+
+        builder.
+            Property(x => x.AnalystId).
+            HasColumnName("analyst_id");
+
+        builder.
+            Property(x => x.ManagerId).
+            HasColumnName("manager_id");
 
         // Define o tamanho da coluna name, torna obrigatorio e renomeia a coluna
         builder.
@@ -41,22 +49,17 @@ internal class UserConfiguration :AbstractValidator<Users>, IEntityTypeConfigura
             IsRequired();
 
         // Define o relacionamento com a entidade Managers
-        builder.
-            HasOne(x => x.Manager).
-            WithOne(x => x.User).
-            HasForeignKey<Managers>(x => x.ManagerId);
+        builder
+            .HasOne(x => x.Manager)
+            .WithOne(x => x.User)
+            .HasForeignKey<Managers>(x => x.UserId);
 
         // Define o relacionamento com a entidade Analysts
-        builder.
-            HasOne(x => x.Analyst).
-            WithOne(x => x.User).
-            HasForeignKey<Analyst>(x => x.AnalystId);
+        builder
+            .HasOne(x => x.Analyst)
+            .WithOne(x => x.User) 
+            .HasForeignKey<Analyst>(x => x.UserId);
 
-        //Ignora as propriedades na serialização JSON
-        //Equivalente a data annotation [Json Ignore]
-        builder.
-            Ignore(x => x.Analyst);
-        builder.
-            Ignore(x => x.Manager);
+
     }
 }
