@@ -1,7 +1,7 @@
 ﻿namespace CallTrack.Domain.entities;
 public class Calls
 {
-    public long CallId { get; set; }
+    public long CallId { get; set; } = default;
 
     // Foreign key de Reasons para Calls
     public long ReasonId { get; set; }

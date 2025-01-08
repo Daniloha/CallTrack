@@ -5,7 +5,7 @@
 namespace CallTrack.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Fix_Relationship_3 : Migration
+    public partial class mod : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

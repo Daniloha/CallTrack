@@ -19,6 +19,7 @@ public class UserConfiguration :AbstractValidator<Users>, IEntityTypeConfigurati
         builder.
             Property(x => x.UserId).
             HasColumnName("user_id").
+            UseMySqlIdentityColumn().
             IsRequired();
 
         builder.

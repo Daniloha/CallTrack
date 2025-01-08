@@ -22,6 +22,19 @@ public class CallTrackContext : DbContext
         builder.ApplyConfigurationsFromAssembly(typeof(CallTrackContext)
         .Assembly);
 
+//        builder.Entity<Users>().HasData(
+//    new Users { UserId = 1, Email = "manager@example.com", Password = "manager123" },
+//    new Users { UserId = 2, Email = "analyst@example.com", Password = "analyst123" }
+//);
+
+//        builder.Entity<Managers>().HasData(
+//            new Managers { ManagerId = 1, ManagerName = "Manager One", UserId = 1 }
+//        );
+
+//        builder.Entity<Analyst>().HasData(
+//            new Analyst { AnalystId = 1, AnalystName = "Analyst One", StatusAnalyst = 1, UserId = 2, ManagerId = 1 }
+//        );
+
         builder.Entity<Reasons>().HasData(
                 new Reasons { ReasonId = 1, Description = "PIX" },
                 new Reasons { ReasonId = 2, Description = "Saldo Bloqueado" },

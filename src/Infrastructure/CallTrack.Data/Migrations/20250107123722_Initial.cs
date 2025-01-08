@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CallTrack.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class NewMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -42,8 +42,8 @@ namespace CallTrack.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     user_password = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    AnalystId = table.Column<long>(type: "bigint", nullable: false),
-                    ManagerId = table.Column<long>(type: "bigint", nullable: false)
+                    analyst_id = table.Column<long>(type: "bigint", nullable: true),
+                    manager_id = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,14 +59,14 @@ namespace CallTrack.Data.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     manager_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false)
+                    user_id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_managers", x => x.manager_id);
                     table.ForeignKey(
-                        name: "FK_managers_users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_managers_users_user_id",
+                        column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "user_id",
                         onDelete: ReferentialAction.Cascade);
@@ -93,7 +93,7 @@ namespace CallTrack.Data.Migrations
                         column: x => x.manager_id,
                         principalTable: "managers",
                         principalColumn: "manager_id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "user_id",
                         column: x => x.user_id,
@@ -107,7 +107,8 @@ namespace CallTrack.Data.Migrations
                 name: "calls",
                 columns: table => new
                 {
-                    call_id = table.Column<long>(type: "bigint", nullable: false),
+                    call_id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     reason_id = table.Column<long>(type: "bigint", nullable: false),
                     call_observation = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -117,17 +118,11 @@ namespace CallTrack.Data.Migrations
                     call_code = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     call_status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    analyst_id = table.Column<long>(type: "bigint", nullable: false),
-                    AnalystId1 = table.Column<long>(type: "bigint", nullable: true)
+                    analyst_id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_calls", x => x.call_id);
-                    table.ForeignKey(
-                        name: "FK_calls_analysts_AnalystId1",
-                        column: x => x.AnalystId1,
-                        principalTable: "analysts",
-                        principalColumn: "analyst_id");
                     table.ForeignKey(
                         name: "FK_calls_analysts_analyst_id",
                         column: x => x.analyst_id,
@@ -214,14 +209,9 @@ namespace CallTrack.Data.Migrations
                 column: "analyst_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_calls_AnalystId1",
-                table: "calls",
-                column: "AnalystId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_managers_UserId",
+                name: "IX_managers_user_id",
                 table: "managers",
-                column: "UserId",
+                column: "user_id",
                 unique: true);
         }
 

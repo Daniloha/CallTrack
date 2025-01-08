@@ -19,6 +19,7 @@ internal class ManagerConfiguration : IEntityTypeConfiguration<Managers>
         builder.
             Property(x => x.ManagerId).
             HasColumnName("manager_id").
+            UseMySqlIdentityColumn().
             IsRequired();
 
         builder.
@@ -44,7 +45,8 @@ internal class ManagerConfiguration : IEntityTypeConfiguration<Managers>
         builder
             .HasOne(x => x.User)
             .WithOne(x => x.Manager)
-            .HasForeignKey<Managers>(x => x.UserId);
+            .HasForeignKey<Managers>(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
 
     }

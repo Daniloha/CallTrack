@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CallTrack.Data.Migrations
 {
     [DbContext(typeof(CallTrackContext))]
-    [Migration("20241227131541_FIX-Relationship_2")]
-    partial class FIXRelationship_2
+    [Migration("20250107123722_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,6 +69,8 @@ namespace CallTrack.Data.Migrations
                     b.Property<long>("CallId")
                         .HasColumnType("bigint")
                         .HasColumnName("call_id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("CallId"));
 
                     b.Property<long>("AnalystId")
                         .HasColumnType("bigint")
@@ -441,7 +443,7 @@ namespace CallTrack.Data.Migrations
                     b.HasOne("CallTrack.Domain.entities.Managers", "Manager")
                         .WithMany("Analysts")
                         .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_analysts_managers_ManagerId");
 

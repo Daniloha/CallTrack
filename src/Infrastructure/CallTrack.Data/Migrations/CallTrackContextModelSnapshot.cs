@@ -67,6 +67,8 @@ namespace CallTrack.Data.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("call_id");
 
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("CallId"));
+
                     b.Property<long>("AnalystId")
                         .HasColumnType("bigint")
                         .HasColumnName("analyst_id");
@@ -438,7 +440,7 @@ namespace CallTrack.Data.Migrations
                     b.HasOne("CallTrack.Domain.entities.Managers", "Manager")
                         .WithMany("Analysts")
                         .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_analysts_managers_ManagerId");
 

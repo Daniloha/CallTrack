@@ -22,12 +22,6 @@ namespace CallTrack.Domain.handlers.CallsHandler
 
         public async Task<PostCallsResponse> Handle(PostCallsRequest request, CancellationToken cancellationToken)
         {
-
-            if (request == null || request.Calls == null)
-            {
-                throw new ArgumentNullException(nameof(request), "Request or Calls cannot be null.");
-            }
-
             // Mapeia e salva múltiplas chamadas
             var callEntities = _mapper.Map<IEnumerable<Calls>>(request.Calls);
 
@@ -35,6 +29,7 @@ namespace CallTrack.Domain.handlers.CallsHandler
 
             foreach (var callEntity in callEntities)
             {
+
                 var createdEntity = await _repository.CreateAsync(callEntity);
                 createdEntities.Add(callEntity);
             }

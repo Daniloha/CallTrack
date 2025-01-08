@@ -21,7 +21,7 @@ public class PostCallsUnitTest : IClassFixture<CallsUnitTestEndpoints>
         {
             Observation = "Observation",
             ReasonId = 1,
-            AnalystId = 1,
+            AnalystId = 8,
             CloseDate = DateTime.Now.AddDays(1),
             OpenDate = DateTime.Now,
             CallType = 0,

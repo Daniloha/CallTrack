@@ -12,7 +12,7 @@ public interface IRepository<T>
 {
     Task<IEnumerable<T>> GetAllAsync();
     Task<T?> GetAsync(Expression<Func<T, bool>> predicate);
-    Task<CreatedAtRouteResult> CreateAsync(T entity);
+    Task<T> CreateAsync(T entity);
     T Update(T entity);
     T Delete(T entity);
 }

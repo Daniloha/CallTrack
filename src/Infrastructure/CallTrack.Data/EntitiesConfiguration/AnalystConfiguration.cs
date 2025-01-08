@@ -35,6 +35,7 @@ internal class AnalystConfiguration : AbstractValidator<Analyst>, IEntityTypeCon
         builder.
             Property(x => x.AnalystId).
             HasColumnName("analyst_id").
+            UseMySqlIdentityColumn().
             IsRequired();
 
         //Define o tamanho da coluna analuystName, torna obrigatorio e renomeia a coluna.
@@ -50,10 +51,12 @@ internal class AnalystConfiguration : AbstractValidator<Analyst>, IEntityTypeCon
             IsRequired();
 
         //Define o relacionamento com a entidade Calls
-        builder.
-            HasMany(x => x.Calls).
-            WithOne(x => x.Analyst).
-            HasForeignKey(x => x.CallId);
+        builder
+            .HasMany(x => x.Calls)
+            .WithOne(x => x.Analyst)
+            .HasForeignKey(x => x.AnalystId) // Use AnalystId como chave estrangeira
+            .OnDelete(DeleteBehavior.Restrict); // Adicione a restrição de deleção, se necessário
+
 
         //Define o valor padrao para a coluna statusAnalyst e torna obrigatorio.
         builder.
@@ -66,6 +69,7 @@ internal class AnalystConfiguration : AbstractValidator<Analyst>, IEntityTypeCon
             .HasOne(x => x.User)
             .WithOne(x => x.Analyst)
             .HasForeignKey<Analyst>(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("user_id");
 
 
@@ -74,6 +78,7 @@ internal class AnalystConfiguration : AbstractValidator<Analyst>, IEntityTypeCon
             .HasOne(x => x.Manager)
             .WithMany(x => x.Analysts)
             .HasForeignKey(x => x.ManagerId)
+            .OnDelete(DeleteBehavior.Restrict)
             .HasConstraintName("FK_analysts_managers_ManagerId"); // Define explicitamente o nome da FK
 
 

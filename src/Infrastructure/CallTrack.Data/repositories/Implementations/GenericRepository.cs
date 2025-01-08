@@ -1,5 +1,6 @@
 ﻿using CallTrack.Data;
 using CallTrack.Domain.services.repositories;
+using CallTrack.Share.dtos.CallsDTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -21,11 +22,11 @@ public class GenericRepository<T> : IRepository<T> where T : class
     //    await _context.SaveChangesAsync(); // Salva as mudanças de forma assíncrona
     //    return entity; // Retorna a entidade criada
     //}
-    public async Task<CreatedAtRouteResult> CreateAsync(T entity)
+    public async Task<T> CreateAsync(T entity)
     {
-        await _context.Set<T>().AddAsync(entity);
+        _context.Set<T>().Add(entity);
         await _context.SaveChangesAsync();
-        return new CreatedAtRouteResult("GetById", new { id = (entity as dynamic).Id }, entity);
+        return entity;
     }
 
 

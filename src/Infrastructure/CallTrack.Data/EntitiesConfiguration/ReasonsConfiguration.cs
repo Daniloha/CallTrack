@@ -20,6 +20,7 @@ internal class ReasonsConfiguration : IEntityTypeConfiguration<Reasons>
         builder.
             Property(x => x.ReasonId).
             HasColumnName("reason_id").
+            UseMySqlIdentityColumn().
             IsRequired();
 
         // Define o tamanho da coluna description, torna obrigatorio e renomeia a coluna
@@ -30,10 +31,12 @@ internal class ReasonsConfiguration : IEntityTypeConfiguration<Reasons>
             IsRequired();
 
         // Define o relacionamento com a entidade Calls
-        builder.
-            HasMany(x => x.Calls).
-            WithOne(x => x.Reasons).
-            HasForeignKey(x => x.CallId);
+        builder
+            .HasMany(x => x.Calls)
+            .WithOne(x => x.Reasons)
+            .HasForeignKey(x => x.ReasonId) // Use ReasonId como chave estrangeira
+            .OnDelete(DeleteBehavior.Cascade); // Escolha o comportamento de deleção
+
 
     }
 }

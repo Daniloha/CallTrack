@@ -25,8 +25,9 @@ namespace CallTrack.Data.EntitiesConfiguration
 
 
             builder.Property(x => x.CallId)
-                   .HasColumnName("call_id")
-                   .IsRequired();
+            .HasColumnName("call_id")
+            .UseMySqlIdentityColumn()
+            .IsRequired();
 
             // Define o tamanho da coluna observation, torna obrigatório e renomeia a coluna
             builder.Property(x => x.Observation)
@@ -37,7 +38,8 @@ namespace CallTrack.Data.EntitiesConfiguration
             // Define o relacionamento com a entidade Reasons
             builder.HasOne(x => x.Reasons)
                    .WithMany(x => x.Calls)
-                   .HasForeignKey(x => x.ReasonId);
+                   .HasForeignKey(x => x.ReasonId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
             // Define o relacionamento com a entidade Analyst
             builder.HasOne(x => x.Analyst)
@@ -72,6 +74,7 @@ namespace CallTrack.Data.EntitiesConfiguration
                    .HasColumnName("call_status")
                    .HasDefaultValue(0)
                    .IsRequired();
+
 
         }
     }
