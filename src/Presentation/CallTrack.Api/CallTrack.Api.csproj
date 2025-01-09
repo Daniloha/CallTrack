@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -24,10 +25,6 @@
     <ProjectReference Include="..\..\Domain\CallTrack.Domain\CallTrack.Domain.csproj" />
     <ProjectReference Include="..\..\Infrastructure\CallTrack.Data\CallTrack.Data.csproj" />
     <ProjectReference Include="..\..\Shareable\CallTrack.Share\CallTrack.Share.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="endpoints\" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,10 @@
-﻿using System;
-using CallTrack.Data;
+﻿using CallTrack.Data;
+using CallTrack.Data.repositories.Implementations;
+using CallTrack.Domain.services.Mappings.CallsProfile;
+using CallTrack.Domain.services.repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+
 
 
 namespace CallTrack.Api.extensions
@@ -32,6 +36,29 @@ namespace CallTrack.Api.extensions
                 );
 
             return builder;
+        }
+
+        public static IServiceCollection AddDependencies(this IServiceCollection services)
+        {
+            services.AddAutoMapper(cfg =>
+            {
+                //cfg.AddProfile(typeof(GetCallProfile));
+                cfg.AddProfile(typeof(PostCallProfile));
+
+            });
+
+        //Validação das configurações do AutoMapper
+        //var serviceProvider = services.BuildServiceProvider();
+        //var mapperConfig = serviceProvider.GetRequiredService<AutoMapper.IConfigurationProvider>();
+        //mapperConfig.AssertConfigurationIsValid();
+
+        services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+
+            services.AddMediatR(cfg => 
+                        cfg.RegisterServicesFromAssembly(Assembly.Load("CallTrack.Domain")));
+
+
+            return services;
         }
     }
 }
