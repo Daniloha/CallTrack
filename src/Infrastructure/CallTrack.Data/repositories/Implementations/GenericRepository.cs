@@ -43,11 +43,11 @@ public class GenericRepository<T> : IRepository<T> where T : class
         return await _context.Set<T>().AsNoTracking().ToListAsync();
     }
 
-    public async Task<T?> GetAsync(Expression<Func<T, bool>> predicate)
-    {
-        var entity = await _context.Set<T>().FirstOrDefaultAsync(predicate);
-        return entity;
-    }
+    //public async Task<T?> GetAsync(long id)
+    //{
+    //    var entity = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+    //    return entity;
+    //}
 
     public T Update(T entity)
     {
