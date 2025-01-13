@@ -49,11 +49,11 @@ public class GenericRepository<T> : IRepository<T> where T : class
     //    return entity;
     //}
 
-    public T Update(T entity)
+    public async Task<T> UpdateAsync(T entity)
     {
         _context.Set<T>().Attach(entity);
         _context.Entry(entity).State = EntityState.Modified;
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return entity;
     }
 }

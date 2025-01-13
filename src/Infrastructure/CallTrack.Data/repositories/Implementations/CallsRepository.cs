@@ -1,4 +1,5 @@
 ﻿using CallTrack.Domain.entities;
+using CallTrack.Domain.services.repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CallTrack.Data.repositories.Implementations
@@ -44,6 +45,22 @@ namespace CallTrack.Data.repositories.Implementations
         public Calls Update(Calls entity)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task UpdateAsync(Calls entity)
+        {
+            _context.Set<Calls>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            
+        }
+
+        Task<Calls> IRepository<Calls>.UpdateAsync(Calls entity)
+        {
+            _context.Set<Calls>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChanges();
+            return Task.FromResult(entity);
         }
     }
 }

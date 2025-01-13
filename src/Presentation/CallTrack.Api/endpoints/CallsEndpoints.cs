@@ -1,4 +1,5 @@
-﻿using CallTrack.Share.requests.CallsRequest;
+﻿using CallTrack.Share.dtos.CallsDTO;
+using CallTrack.Share.requests.CallsRequest;
 using MediatR;
 
 namespace CallTrack.Api.endpoints;
@@ -41,5 +42,14 @@ public static class CallsEndpoints
             return Results.Ok(response);
         })
         .WithTags("Calls");
+
+        // Endpoint para atualizar um chamado
+        app.MapPut("/calls/{id:long}", async (IMediator mediator, UpdateCallsDTO callDto, long id) =>
+        {
+            var request = new UpdateCallsRequest(callDto);
+            var response = await mediator.Send(new UpdateCallsRequestWithId(id, callDto));
+            return Results.Ok(response);
+        })
+.WithTags("Calls");
     }
 }
