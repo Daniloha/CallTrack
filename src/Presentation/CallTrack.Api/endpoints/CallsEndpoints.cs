@@ -24,22 +24,22 @@ public static class CallsEndpoints
         })
         .WithTags("Calls");
 
-    //    // Endpoint para buscar chamados por ID
-    //    app.MapGet("/calls/{id:long}", async (IMediator mediator, long id) =>
-    //    {
-    //        // Cria a requisição com o ID fornecido
-    //        var request = new GetCallsRequest { Id = id };
+        // Endpoint para buscar chamados por ID
+        app.MapGet("/calls/{id:long}", async (IMediator mediator, long id) =>
+        {
+            // Cria a requisição com o ID fornecido
+            var request = new GetCallsRequest { Id = id };
 
-    //        // Envia a requisição ao MediatR
-    //        var response = await mediator.Send(request);
+            // Envia a requisição ao MediatR
+            var response = await mediator.Send(request);
 
-    //        // Verifica se a resposta é nula (caso o handler retorne null em vez de lançar exceção)
-    //        if (response == null)
-    //            return Results.NotFound($"Chamado com ID {id} não encontrada.");
+            // Verifica se a resposta é nula (caso o handler retorne null em vez de lançar exceção)
+            if (response == null)
+                return Results.NotFound($"Chamado com ID {id} não encontrada.");
 
-    //        // Retorna a resposta
-    //        return Results.Ok(response);
-    //    })
-    //    .WithTags("Calls");
+            // Retorna a resposta
+            return Results.Ok(response);
+        })
+        .WithTags("Calls");
     }
 }

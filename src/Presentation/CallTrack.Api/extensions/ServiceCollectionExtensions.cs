@@ -1,4 +1,5 @@
 ﻿using CallTrack.Data;
+using CallTrack.Data.repositories;
 using CallTrack.Data.repositories.Implementations;
 using CallTrack.Domain.services.Mappings.CallsProfile;
 using CallTrack.Domain.services.repositories;
@@ -42,7 +43,7 @@ namespace CallTrack.Api.extensions
         {
             services.AddAutoMapper(cfg =>
             {
-                //cfg.AddProfile(typeof(GetCallProfile));
+                cfg.AddProfile(typeof(GetCallProfile));
                 cfg.AddProfile(typeof(PostCallProfile));
 
             });
@@ -53,6 +54,8 @@ namespace CallTrack.Api.extensions
         //mapperConfig.AssertConfigurationIsValid();
 
         services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+
+        services.AddScoped<ICallsRepository, CallsRepository>();
 
             services.AddMediatR(cfg => 
                         cfg.RegisterServicesFromAssembly(Assembly.Load("CallTrack.Domain")));
