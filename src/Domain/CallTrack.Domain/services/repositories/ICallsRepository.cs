@@ -7,6 +7,5 @@ namespace CallTrack.Data.repositories
     {
         public Task<Calls> GetCallById(long id);
 
-        public Task UpdateAsync(Calls entity);
     }
 }

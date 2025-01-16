@@ -16,19 +16,13 @@ public class GenericRepository<T> : IRepository<T> where T : class
     {
         _context = context;
     }
-    //public async Task<T> CreateAsync(T entity)
-    //{
-    //    await _context.Set<T>().AddAsync(entity); // Adiciona a entidade de forma assíncrona
-    //    await _context.SaveChangesAsync(); // Salva as mudanças de forma assíncrona
-    //    return entity; // Retorna a entidade criada
-    //}
+
     public async Task<T> CreateAsync(T entity)
     {
         _context.Set<T>().Add(entity);
         await _context.SaveChangesAsync();
         return entity;
     }
-
 
     public T Delete(T entity)
     {
@@ -42,12 +36,6 @@ public class GenericRepository<T> : IRepository<T> where T : class
     {
         return await _context.Set<T>().AsNoTracking().ToListAsync();
     }
-
-    //public async Task<T?> GetAsync(long id)
-    //{
-    //    var entity = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
-    //    return entity;
-    //}
 
     public async Task<T> UpdateAsync(T entity)
     {

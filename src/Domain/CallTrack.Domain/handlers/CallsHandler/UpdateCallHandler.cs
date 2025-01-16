@@ -20,12 +20,7 @@ public class UpdateCallHandler : IRequestHandler<UpdateCallsRequestWithId, Updat
         var existingCall = await _repository.GetCallById(request.Id);
         if (existingCall == null)
         {
-            return new UpdateCallsResponse
-            {
-                CallId = request.Id,
-                Message = "Chamado não encontrado",
-                Success = false
-            };
+            throw new KeyNotFoundException($"Chamado com ID {request.Id} não encontrado.");
         }
 
         // Atualizar campos fornecidos
@@ -64,3 +59,4 @@ public class UpdateCallHandler : IRequestHandler<UpdateCallsRequestWithId, Updat
         };
     }
 }
+
