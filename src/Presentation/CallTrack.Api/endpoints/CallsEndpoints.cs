@@ -9,13 +9,13 @@ public static class CallsEndpoints
     public static void MapCallsEndpoints(this WebApplication app)
     {
         //Endpoint para buscar todos os chamados
-        //app.MapGet("/calls", async (IMediator mediator) =>
-        //{
-        //    var request = new GetAllCallsRequest();
-        //    var response = await mediator.Send(request);
-        //    return Results.Ok(response);
-        //})
-        //.WithTags("Calls");
+        app.MapGet("/calls", async (IMediator mediator) =>
+        {
+            var request = new GetAllCallsRequest();
+            var response = await mediator.Send(request);
+            return Results.Ok(response);
+        })
+        .WithTags("Calls");
 
         // Endpoint para criar um novo chamado
         app.MapPost("/calls", async (IMediator mediator, PostCallsRequest request) =>
