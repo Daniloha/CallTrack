@@ -1,36 +1,14 @@
 ﻿using CallTrack.Domain.entities;
+using CallTrack.Domain.services.repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CallTrack.Data.repositories.Implementations
 {
 
-    public class CallsRepository : ICallsRepository
+    public class CallsRepository : GenericRepository<Calls>, ICallsRepository
     {
-        protected readonly CallTrackContext _context;
 
-        public CallsRepository(CallTrackContext context)
-        {
-            _context = context;
-        }
-        public Task<Calls> CreateAsync(Calls entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Calls Delete(Calls entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Calls>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Calls?> GetAsync(long id)
-        {
-            throw new NotImplementedException();
-        }
+        public CallsRepository(CallTrackContext context) : base(context) { }
 
         public async Task<Calls> GetCallById(long id)
         {
@@ -39,11 +17,13 @@ namespace CallTrack.Data.repositories.Implementations
 
             return entity;
         }
-        
 
-        public Calls Update(Calls entity)
+        Task<Calls> IRepository<Calls>.UpdateAsync(Calls entity)
         {
-            throw new NotImplementedException();
+            _context.Set<Calls>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChanges();
+            return Task.FromResult(entity);
         }
     }
 }

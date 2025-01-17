@@ -6,5 +6,6 @@ namespace CallTrack.Data.repositories
     public interface ICallsRepository : IRepository<Calls>
     {
         public Task<Calls> GetCallById(long id);
+
     }
 }

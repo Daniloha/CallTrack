@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using CallTrack.Data.repositories;
-using CallTrack.Domain.entities;
-using CallTrack.Domain.services.repositories;
 using CallTrack.Share.requests.CallsRequest;
 using CallTrack.Share.responses.CallsResponse;
 using MediatR;
-using System.Linq.Expressions;
 
 namespace CallTrack.Domain.handlers.CallsHandler
 {

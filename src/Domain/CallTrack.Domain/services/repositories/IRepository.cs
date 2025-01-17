@@ -13,6 +13,6 @@ public interface IRepository<T>
     Task<IEnumerable<T>> GetAllAsync();
     //Task<T?> GetAsync(long id);
     Task<T> CreateAsync(T entity);
-    T Update(T entity);
+    Task<T> UpdateAsync(T entity);
     T Delete(T entity);
 }

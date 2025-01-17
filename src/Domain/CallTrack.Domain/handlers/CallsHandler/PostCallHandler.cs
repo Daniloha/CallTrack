@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CallTrack.Data.repositories;
 using CallTrack.Domain.entities;
 using CallTrack.Domain.services.repositories;
 using CallTrack.Share.dtos.CallsDTO;
@@ -11,10 +12,10 @@ namespace CallTrack.Domain.handlers.CallsHandler
 {
     public class PostCallHandler : IRequestHandler<PostCallsRequest, PostCallsResponse>
     {
-        private readonly IRepository<Calls> _repository; // O repositório trabalha com a entidade Calls
+        private readonly ICallsRepository _repository; // O repositório trabalha com a entidade Calls
         private readonly IMapper _mapper; // Use AutoMapper para fazer o mapeamento
 
-        public PostCallHandler(IRepository<Calls> repository, IMapper mapper)
+        public PostCallHandler(ICallsRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
