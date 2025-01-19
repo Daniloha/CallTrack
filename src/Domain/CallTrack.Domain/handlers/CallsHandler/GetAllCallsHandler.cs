@@ -7,15 +7,16 @@ using CallTrack.Domain.services.Mappings;
 using CallTrack.Share.vos;
 using CallTrack.Share.requests.CallsRequest;
 using CallTrack.Share.responses.CallsResponse;
+using CallTrack.Data.repositories;
 
 namespace CallTrack.Domain.handlers.CallsHandler;
 
 public class GetAllCallsHandler : IRequestHandler<GetAllCallsRequest, GetAllCallsResponse>
 {
-    private readonly IRepository<Calls> _repository; // O repositório trabalha com a entidade Calls
+    private readonly ICallsRepository _repository; // O repositório trabalha com a entidade Calls
     private readonly IMapper _mapper; // Use AutoMapper para fazer o mapeamento
 
-    public GetAllCallsHandler(IRepository<Calls> repository, IMapper mapper)
+    public GetAllCallsHandler(ICallsRepository repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;

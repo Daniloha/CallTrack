@@ -12,10 +12,7 @@ public class GetCallProfile : Profile
     {
         CreateMap<Calls, GetCallsDTO>();
         CreateMap<GetCallsDTO, Calls>();
-        //.ForMember(dest => dest.reasonsQuantity, opt =>
-        //opt.MapFrom(src => src.reasons.Count)) // Mapeia a quantidade de razões
-        //.ForMember(dest => dest.analystName, opt =>
-        //opt.MapFrom(src => src.analyst.analystName)); // Mapeia o nome do analista
+       
 
         CreateMap<Calls, CallsVO>();
         CreateMap<CallsVO, Calls>();
