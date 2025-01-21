@@ -1,5 +1,6 @@
 ﻿using CallTrack.Domain.entities;
 using CallTrack.Domain.services.repositories;
+using CallTrack.Share.config;
 using Microsoft.EntityFrameworkCore;
 
 namespace CallTrack.Data.repositories.Implementations
@@ -17,7 +18,14 @@ namespace CallTrack.Data.repositories.Implementations
 
             return entity;
         }
+        public async Task<PagedList<Calls>> GetCallsAsync(CallsParameters callsParameters)
+        {
+            var query = _context.Set<Calls>().AsQueryable();
 
+            return await Task.Run(() =>
+                PagedList<Calls>.ToPagedList(query, callsParameters.PageNumber, callsParameters.PageSize)
+            );
+        }
         Task<Calls> IRepository<Calls>.UpdateAsync(Calls entity)
         {
             _context.Set<Calls>().Attach(entity);
