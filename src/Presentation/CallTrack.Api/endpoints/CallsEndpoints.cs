@@ -62,6 +62,13 @@ public static class CallsEndpoints
             var response = await mediator.Send(request);
             return Results.Ok(response);
         })
-.WithTags("Calls");
+        .WithTags("Calls");
+        //Endpoint para buscar chamados filtrados por analista
+        app.MapGet("/calls/analyst", async (IMediator mediator, [AsParameters] GetCallsFilterAnalystRequest request) =>
+        {
+            var response = await mediator.Send(request);
+            return Results.Ok(response);
+        })
+        .WithTags("Calls");
     }
 }

@@ -22,12 +22,5 @@ public class GetCallProfile : Profile
         CreateMap<Calls, GetCallsResponse>()
         .ForMember(dest => dest.Calls, opt => opt.MapFrom(src => src));
 
-        // Mapeamento de PagedList<Calls> para PagedList<GetCallsDTO>
-        CreateMap<PagedList<Calls>, PagedList<GetCallsDTO>>()
-     .ConstructUsing((src, ctx) =>
-     {
-         var items = ctx.Mapper.Map<List<GetCallsDTO>>(src.ToList());
-         return new PagedList<GetCallsDTO>(items, src.TotalCount, src.CurrentPage, src.PageSize);
-     });
     }
 }
