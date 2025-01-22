@@ -37,6 +37,15 @@ namespace CallTrack.Data.repositories.Implementations
             );
         }
 
+        public Task<PagedList<Calls>> GetCallsFilterReason(CallsFilterReason callsFilterReason)
+        {
+            var Calls = _context.Set<Calls>().Where(x => x.ReasonId == callsFilterReason.Id).AsQueryable();
+
+            return Task.Run(() =>
+                PagedList<Calls>.ToPagedList(Calls, callsFilterReason.PageNumber, callsFilterReason.PageSize)
+            );
+        }
+
         Task<Calls> IRepository<Calls>.UpdateAsync(Calls entity)
         {
             _context.Set<Calls>().Attach(entity);
