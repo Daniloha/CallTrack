@@ -10,6 +10,7 @@ namespace CallTrack.Data.repositories
         Task<PagedList<Calls>> GetCallsAsync(CallsParameters callsParameters);
         Task<PagedList<Calls>> GetCallsFilterAnalyst(CallsFilterAnalyst callsFilterAnalyst);
         Task<PagedList<Calls>> GetCallsFilterReason(CallsFilterReason callsFilterReason);
+        Task<PagedList<Calls>> GetCallsFilterType(CallsFilterType callsFilterType);
         public Task<Calls> GetCallById(long id);
         //Task GetCallsAsync(CallsParameters callsParameters);
     }
