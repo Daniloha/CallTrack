@@ -11,6 +11,8 @@ namespace CallTrack.Data.repositories
         Task<PagedList<Calls>> GetCallsFilterAnalyst(CallsFilterAnalyst callsFilterAnalyst);
         Task<PagedList<Calls>> GetCallsFilterReason(CallsFilterReason callsFilterReason);
         Task<PagedList<Calls>> GetCallsFilterType(CallsFilterType callsFilterType);
+        Task<PagedList<Calls>> GetCallsFilterStatus(CallsFilterStatus callsFilterStatus);
+        Task<PagedList<Calls>> GetCallsFilterPeriod(CallsFilterPeriod callsFilterPeriod);
         public Task<Calls> GetCallById(long id);
         //Task GetCallsAsync(CallsParameters callsParameters);
     }

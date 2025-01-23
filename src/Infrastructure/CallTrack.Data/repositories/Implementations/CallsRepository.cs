@@ -37,12 +37,30 @@ namespace CallTrack.Data.repositories.Implementations
             );
         }
 
+        public Task<PagedList<Calls>> GetCallsFilterPeriod(CallsFilterPeriod callsFilterPeriod)
+        {
+            var Calls = _context.Set<Calls>().Where(x => x.OpenDate >= callsFilterPeriod.StartDate && x.CloseDate <= callsFilterPeriod.EndDate).AsQueryable();
+
+            return Task.Run(() =>
+                PagedList<Calls>.ToPagedList(Calls, callsFilterPeriod.PageNumber, callsFilterPeriod.PageSize)
+            );
+        }
+
         public Task<PagedList<Calls>> GetCallsFilterReason(CallsFilterReason callsFilterReason)
         {
             var Calls = _context.Set<Calls>().Where(x => x.ReasonId == callsFilterReason.Id).AsQueryable();
 
             return Task.Run(() =>
                 PagedList<Calls>.ToPagedList(Calls, callsFilterReason.PageNumber, callsFilterReason.PageSize)
+            );
+        }
+
+        public Task<PagedList<Calls>> GetCallsFilterStatus(CallsFilterStatus callsFilterStatus)
+        {
+            var Calls = _context.Set<Calls>().Where(x => x.Status == callsFilterStatus.CallsStatus).AsQueryable();
+
+            return Task.Run(() =>
+                PagedList<Calls>.ToPagedList(Calls, callsFilterStatus.PageNumber, callsFilterStatus.PageSize)
             );
         }
 

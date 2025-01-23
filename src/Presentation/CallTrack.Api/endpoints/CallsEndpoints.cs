@@ -56,7 +56,7 @@ public static class CallsEndpoints
         .WithTags("Calls");
 
         // Endpoint para buscar chamados com paginação
-        app.MapGet("/paginationcalls", async (IMediator mediator, [AsParameters] CallsParameters callsParameters) =>
+        app.MapGet("/calls/pagination", async (IMediator mediator, [AsParameters] CallsParameters callsParameters) =>
         {
             var request = new GetPaginatedCallsRequest(callsParameters);
             var response = await mediator.Send(request);
@@ -86,5 +86,19 @@ public static class CallsEndpoints
             return Results.Ok(response);
         })
         .WithTags("Calls");
+
+        app.MapGet("/calls/status", async (IMediator mediator, [AsParameters] GetCallsFilterStatusRequest request) =>
+        {
+            var response = await mediator.Send(request);
+            return Results.Ok(response);
+        })
+        .WithTags("Calls");
+
+        app.MapGet("/calls/period", async (IMediator mediator, [AsParameters] GetCallsFilterPeriodRequest request) =>
+        {
+            var response = await mediator.Send(request);
+            return Results.Ok(response);
+        })
+.WithTags("Calls");
     }
 }
