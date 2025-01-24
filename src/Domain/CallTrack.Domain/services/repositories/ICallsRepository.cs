@@ -1,7 +1,7 @@
 ﻿using CallTrack.Domain.entities;
 using CallTrack.Domain.services.repositories;
 using CallTrack.Share.config;
-using CallTrack.Share.Pagination;
+using CallTrack.Share.Filters;
 
 namespace CallTrack.Data.repositories
 {

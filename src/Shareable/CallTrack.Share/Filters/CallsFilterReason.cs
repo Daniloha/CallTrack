@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CallTrack.Share.Pagination
+namespace CallTrack.Share.Filters
 {
-    public class CallsFilterType : CallsParameters
+    public class CallsFilterReason : CallsParameters
     {
-        public int CallsType { get; set; }
+        public long Id { get; set; }
     }
 }

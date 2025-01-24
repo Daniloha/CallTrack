@@ -1,5 +1,5 @@
 ﻿using CallTrack.Share.dtos.CallsDTO;
-using CallTrack.Share.Pagination;
+using CallTrack.Share.Filters;
 using CallTrack.Share.responses.CallsResponse;
 using MediatR;
 

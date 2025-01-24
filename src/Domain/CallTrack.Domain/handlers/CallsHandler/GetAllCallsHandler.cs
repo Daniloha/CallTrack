@@ -11,29 +11,24 @@ using CallTrack.Data.repositories;
 
 namespace CallTrack.Domain.handlers.CallsHandler;
 
-public class GetAllCallsHandler : IRequestHandler<GetAllCallsRequest, GetAllCallsResponse>
+public class GetAllCallsHandler : BaseHandler<ICallsRepository>, IRequestHandler<GetAllCallsRequest, GetAllCallsResponse>
 {
-    private readonly ICallsRepository _repository; // O repositório trabalha com a entidade Calls
-    private readonly IMapper _mapper; // Use AutoMapper para fazer o mapeamento
+  
+    public GetAllCallsHandler(ICallsRepository repository, IMapper mapper) : base(repository, mapper) { }
 
-    public GetAllCallsHandler(ICallsRepository repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
 
     public async Task<GetAllCallsResponse> Handle(GetAllCallsRequest request, CancellationToken cancellationToken)
     {
         try
         {
             // Obter todos os chamados do repositório
-            var calls = await _repository.GetAllAsync();
+            var calls = await Repository.GetAllAsync();
 
             List<CallsVO> changeCalls = new List<CallsVO>();
 
             foreach (var call in calls)
             {
-                var newCall = _mapper.Map<CallsVO>(call);
+                var newCall = Mapper.Map<CallsVO>(call);
                 changeCalls.Add(newCall);
             }
             return new GetAllCallsResponse(changeCalls.ToArray());

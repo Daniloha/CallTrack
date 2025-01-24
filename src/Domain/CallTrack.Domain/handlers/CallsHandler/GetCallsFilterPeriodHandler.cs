@@ -8,23 +8,19 @@ using MediatR;
 
 namespace CallTrack.Domain.handlers.CallsHandler
 {
-    public class GetCallsFilterPeriodHandler : IRequestHandler<GetCallsFilterPeriodRequest, PagedGetResponse<GetCallsDTO>>
+    public class GetCallsFilterPeriodHandler : BaseHandler<ICallsRepository>, IRequestHandler<GetCallsFilterPeriodRequest, PagedGetResponse<GetCallsDTO>>
     {
-        private readonly ICallsRepository _callsRepository;
-        private readonly IMapper _mapper;
+        
 
-        public GetCallsFilterPeriodHandler(ICallsRepository callsRepository, IMapper mapper)
-        {
-            _callsRepository = callsRepository;
-            _mapper = mapper;
-        }
+        public GetCallsFilterPeriodHandler(ICallsRepository repository, IMapper mapper) : base(repository, mapper) { }
+
         public async Task<PagedGetResponse<GetCallsDTO>> Handle(GetCallsFilterPeriodRequest request, CancellationToken cancellationToken)
         {
             // Obtém as chamadas filtradas do repositório
-            var pagedCalls = await _callsRepository.GetCallsFilterPeriod(request);
+            var pagedCalls = await Repository.GetCallsFilterPeriod(request);
 
             // Usa o AutoMapper para converter PagedList<Calls> em PagedList<GetCallsDTO>
-            var pagedDto = pagedCalls.MapPagedList<Calls, GetCallsDTO>(_mapper);
+            var pagedDto = pagedCalls.MapPagedList<Calls, GetCallsDTO>(Mapper);
 
             // Retorna a resposta paginada
             return new PagedGetResponse<GetCallsDTO>(pagedDto);

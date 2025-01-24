@@ -1,7 +1,8 @@
 ﻿using CallTrack.Domain.entities;
 using CallTrack.Domain.services.repositories;
 using CallTrack.Share.config;
-using CallTrack.Share.Pagination;
+using CallTrack.Share.Filters;
+using CallTrack.Share.vos;
 using Microsoft.EntityFrameworkCore;
 
 namespace CallTrack.Data.repositories.Implementations
@@ -30,10 +31,16 @@ namespace CallTrack.Data.repositories.Implementations
 
         public Task<PagedList<Calls>> GetCallsFilterAnalyst(CallsFilterAnalyst callsFilterAnalyst)
         {
-            var Calls = _context.Set<Calls>().Where(x => x.AnalystId == callsFilterAnalyst.Id).AsQueryable();
-
+            var calls = _context.Set<Calls>().Where(x => x.AnalystId == callsFilterAnalyst.Id).AsQueryable();
+            // Aplicar ordenação
+            if (callsFilterAnalyst.OrderBy != null)
+            {
+                calls = callsFilterAnalyst.Descending
+                    ? calls.OrderByDescending(c => EF.Property<object>(c, callsFilterAnalyst.OrderBy.ToString()))
+                    : calls.OrderBy(c => EF.Property<object>(c, callsFilterAnalyst.OrderBy.ToString()));
+            }
             return Task.Run(() =>
-                PagedList<Calls>.ToPagedList(Calls, callsFilterAnalyst.PageNumber, callsFilterAnalyst.PageSize)
+                PagedList<Calls>.ToPagedList(calls, callsFilterAnalyst.PageNumber, callsFilterAnalyst.PageSize)
             );
         }
 
