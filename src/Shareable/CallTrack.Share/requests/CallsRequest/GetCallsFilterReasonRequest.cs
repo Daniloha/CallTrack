@@ -1,4 +1,5 @@
 ﻿using CallTrack.Share.dtos.CallsDTO;
+using CallTrack.Share.enums;
 using CallTrack.Share.Filters;
 using CallTrack.Share.responses.CallsResponse;
 using MediatR;

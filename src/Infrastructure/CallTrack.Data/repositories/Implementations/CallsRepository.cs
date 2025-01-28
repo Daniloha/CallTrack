@@ -2,6 +2,7 @@
 using CallTrack.Domain.services.repositories;
 using CallTrack.Share.config;
 using CallTrack.Share.Filters;
+using CallTrack.Share.Sort;
 using CallTrack.Share.vos;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,13 +33,9 @@ namespace CallTrack.Data.repositories.Implementations
         public Task<PagedList<Calls>> GetCallsFilterAnalyst(CallsFilterAnalyst callsFilterAnalyst)
         {
             var calls = _context.Set<Calls>().Where(x => x.AnalystId == callsFilterAnalyst.Id).AsQueryable();
-            // Aplicar ordenação
-            if (callsFilterAnalyst.OrderBy != null)
-            {
-                calls = callsFilterAnalyst.Descending
-                    ? calls.OrderByDescending(c => EF.Property<object>(c, callsFilterAnalyst.OrderBy.ToString()))
-                    : calls.OrderBy(c => EF.Property<object>(c, callsFilterAnalyst.OrderBy.ToString()));
-            }
+            // Aplicar ordenação genérica
+            calls = calls.ApplySorting(callsFilterAnalyst.OrderBy.ToString(), callsFilterAnalyst.Descending);
+
             return Task.Run(() =>
                 PagedList<Calls>.ToPagedList(calls, callsFilterAnalyst.PageNumber, callsFilterAnalyst.PageSize)
             );
@@ -46,37 +43,49 @@ namespace CallTrack.Data.repositories.Implementations
 
         public Task<PagedList<Calls>> GetCallsFilterPeriod(CallsFilterPeriod callsFilterPeriod)
         {
-            var Calls = _context.Set<Calls>().Where(x => x.OpenDate >= callsFilterPeriod.StartDate && x.CloseDate <= callsFilterPeriod.EndDate).AsQueryable();
+            var calls = _context.Set<Calls>().Where(x => x.OpenDate >= callsFilterPeriod.StartDate && x.CloseDate <= callsFilterPeriod.EndDate).AsQueryable();
+
+            // Aplicar ordenação genérica
+            calls = calls.ApplySorting(callsFilterPeriod.OrderBy.ToString(), callsFilterPeriod.Descending);
 
             return Task.Run(() =>
-                PagedList<Calls>.ToPagedList(Calls, callsFilterPeriod.PageNumber, callsFilterPeriod.PageSize)
+                PagedList<Calls>.ToPagedList(calls, callsFilterPeriod.PageNumber, callsFilterPeriod.PageSize)
             );
         }
 
         public Task<PagedList<Calls>> GetCallsFilterReason(CallsFilterReason callsFilterReason)
         {
-            var Calls = _context.Set<Calls>().Where(x => x.ReasonId == callsFilterReason.Id).AsQueryable();
+            var calls = _context.Set<Calls>().Where(x => x.ReasonId == callsFilterReason.Id).AsQueryable();
+
+            // Aplicar ordenação genérica
+            calls = calls.ApplySorting(callsFilterReason.OrderBy.ToString(), callsFilterReason.Descending);
 
             return Task.Run(() =>
-                PagedList<Calls>.ToPagedList(Calls, callsFilterReason.PageNumber, callsFilterReason.PageSize)
+                PagedList<Calls>.ToPagedList(calls, callsFilterReason.PageNumber, callsFilterReason.PageSize)
             );
         }
 
         public Task<PagedList<Calls>> GetCallsFilterStatus(CallsFilterStatus callsFilterStatus)
         {
-            var Calls = _context.Set<Calls>().Where(x => x.Status == callsFilterStatus.CallsStatus).AsQueryable();
+            var calls = _context.Set<Calls>().Where(x => x.Status == callsFilterStatus.CallsStatus).AsQueryable();
+
+            // Aplicar ordenação genérica
+            calls = calls.ApplySorting(callsFilterStatus.OrderBy.ToString(), callsFilterStatus.Descending);
 
             return Task.Run(() =>
-                PagedList<Calls>.ToPagedList(Calls, callsFilterStatus.PageNumber, callsFilterStatus.PageSize)
+                PagedList<Calls>.ToPagedList(calls, callsFilterStatus.PageNumber, callsFilterStatus.PageSize)
             );
         }
 
         public Task<PagedList<Calls>> GetCallsFilterType(CallsFilterType callsFilterType)
         {
-            var Calls = _context.Set<Calls>().Where(x => x.Type == callsFilterType.CallsType).AsQueryable();
+            var calls = _context.Set<Calls>().Where(x => x.Type == callsFilterType.CallsType).AsQueryable();
+
+            // Aplicar ordenação genérica
+            calls = calls.ApplySorting(callsFilterType.OrderBy.ToString(), callsFilterType.Descending);
 
             return Task.Run(() =>
-                PagedList<Calls>.ToPagedList(Calls, callsFilterType.PageNumber, callsFilterType.PageSize)
+                PagedList<Calls>.ToPagedList(calls, callsFilterType.PageNumber, callsFilterType.PageSize)
             );
         }
 
