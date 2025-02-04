@@ -10,19 +10,17 @@ public class GetCallProfile : Profile
 {
     public GetCallProfile()
     {
+        // Mapeamento de entidade para DTO e vice-versa
         CreateMap<Calls, GetCallsDTO>();
         CreateMap<GetCallsDTO, Calls>();
-        //.ForMember(dest => dest.reasonsQuantity, opt =>
-        //opt.MapFrom(src => src.reasons.Count)) // Mapeia a quantidade de razões
-        //.ForMember(dest => dest.analystName, opt =>
-        //opt.MapFrom(src => src.analyst.analystName)); // Mapeia o nome do analista
 
+        // Mapeamento para CallsVO
         CreateMap<Calls, CallsVO>();
         CreateMap<CallsVO, Calls>();
 
-        // Mapeamento para GetCallsResponse
+        // Mapeamento para resposta GetCallsResponse
         CreateMap<Calls, GetCallsResponse>()
-            .ForMember(dest => dest.Calls, opt => opt.MapFrom(src => src));
-    }
+        .ForMember(dest => dest.Calls, opt => opt.MapFrom(src => src));
 
+    }
 }
