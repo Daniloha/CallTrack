@@ -1,23 +1,17 @@
 ﻿using AutoMapper;
 using CallTrack.Data.repositories;
+using CallTrack.Domain.handlers;
 using CallTrack.Share.requests.CallsRequest;
 using CallTrack.Share.responses.CallsResponse;
 using MediatR;
 
-public class UpdateCallHandler : IRequestHandler<UpdateCallsRequestWithId, UpdateCallsResponse>
+public class UpdateCallHandler : BaseHandler<ICallsRepository>, IRequestHandler<UpdateCallsRequestWithId, UpdateCallsResponse>
 {
-    private readonly ICallsRepository _repository;
-    private readonly IMapper _mapper;
 
-    public UpdateCallHandler(ICallsRepository repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
-
+    public UpdateCallHandler(ICallsRepository repository, IMapper mapper) : base(repository, mapper) { }
     public async Task<UpdateCallsResponse> Handle(UpdateCallsRequestWithId request, CancellationToken cancellationToken)
     {
-        var existingCall = await _repository.GetCallById(request.Id);
+        var existingCall = await Repository.GetCallById(request.Id);
         if (existingCall == null)
         {
             throw new KeyNotFoundException($"Chamado com ID {request.Id} não encontrado.");
@@ -49,7 +43,7 @@ public class UpdateCallHandler : IRequestHandler<UpdateCallsRequestWithId, Updat
             existingCall.Status = request.Call.Status.Value;
 
         // Persistir as alterações
-        await _repository.UpdateAsync(existingCall);
+        await Repository.UpdateAsync(existingCall);
 
         return new UpdateCallsResponse
         {

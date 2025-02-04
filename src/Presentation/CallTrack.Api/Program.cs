@@ -26,6 +26,7 @@ builder.Services.AddRateLimiter(options =>
 var app = builder.Build();
 
 app.MapCallsEndpoints(); // Mapeia os endpoints da classe Call
+app.MapReasonsEndpoints(); // Mapeia os endpoints da classe Re
 
 var environment = app.Environment;
 app.UseExceptionHandling(environment)

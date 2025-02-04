@@ -24,7 +24,9 @@ namespace CallTrack.Data.EntitiesConfiguration
                 IsRequired();
 
 
-            builder.Property(x => x.CallId)
+            builder
+            .Property(x => x.CallId)
+            .ValueGeneratedOnAdd()
             .HasColumnName("call_id")
             .UseMySqlIdentityColumn()
             .IsRequired();

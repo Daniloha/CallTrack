@@ -19,6 +19,7 @@ internal class ReasonsConfiguration : IEntityTypeConfiguration<Reasons>
 
         builder.
             Property(x => x.ReasonId).
+            ValueGeneratedOnAdd().
             HasColumnName("reason_id").
             UseMySqlIdentityColumn().
             IsRequired();

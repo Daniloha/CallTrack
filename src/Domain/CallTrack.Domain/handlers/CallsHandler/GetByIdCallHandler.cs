@@ -6,35 +6,20 @@ using MediatR;
 
 namespace CallTrack.Domain.handlers.CallsHandler
 {
-    public class GetByIdCallHandler : IRequestHandler<GetCallsRequest, GetCallsResponse>
+    public class GetByIdCallHandler : BaseHandler<ICallsRepository>, IRequestHandler<GetCallsRequest, GetCallsResponse>
     {
-        private readonly ICallsRepository _repository; // O repositório trabalha com a entidade Calls
-        private readonly IMapper _mapper; // Use AutoMapper para fazer o mapeamento
-
-        public GetByIdCallHandler(ICallsRepository repository, IMapper mapper)
-        {
-            _repository = repository;
-            _mapper = mapper;
-        }
+        public GetByIdCallHandler(ICallsRepository repository, IMapper mapper) : base(repository, mapper) { }
 
         public async Task<GetCallsResponse> Handle(GetCallsRequest request, CancellationToken cancellationToken)
         {
-            // Verifica se o ID é válido
             if (request.Id <= 0)
                 throw new ArgumentException("O ID fornecido é inválido. Deve ser maior que zero.");
 
-
-            // Busca a chamada no repositório
-            var callEntity = await _repository.GetCallById(request.Id);
-
-            // Verifica se a entidade foi encontrada
+            var callEntity = await Repository.GetCallById(request.Id);
             if (callEntity == null)
-                throw new KeyNotFoundException("Chamado não encontrada para o ID fornecido.");
+                throw new KeyNotFoundException("Chamado não encontrado para o ID fornecido.");
 
-            // Mapeia a entidade para a resposta
-            var response = _mapper.Map<GetCallsResponse>(callEntity);
-
-            return response;
+            return Mapper.Map<GetCallsResponse>(callEntity);
         }
 
 

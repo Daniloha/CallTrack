@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CallTrack.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class MEW_MIGRATION : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,47 +33,6 @@ namespace CallTrack.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "users",
-                columns: table => new
-                {
-                    user_id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    user_email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    user_password = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    analyst_id = table.Column<long>(type: "bigint", nullable: true),
-                    manager_id = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_users", x => x.user_id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "managers",
-                columns: table => new
-                {
-                    manager_id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    manager_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    user_id = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_managers", x => x.manager_id);
-                    table.ForeignKey(
-                        name: "FK_managers_users_user_id",
-                        column: x => x.user_id,
-                        principalTable: "users",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "analysts",
                 columns: table => new
                 {
@@ -88,18 +47,6 @@ namespace CallTrack.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_analysts", x => x.analyst_id);
-                    table.ForeignKey(
-                        name: "FK_analysts_managers_ManagerId",
-                        column: x => x.manager_id,
-                        principalTable: "managers",
-                        principalColumn: "manager_id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "user_id",
-                        column: x => x.user_id,
-                        principalTable: "users",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -130,11 +77,58 @@ namespace CallTrack.Data.Migrations
                         principalColumn: "analyst_id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_calls_reasons_call_id",
-                        column: x => x.call_id,
+                        name: "FK_calls_reasons_reason_id",
+                        column: x => x.reason_id,
                         principalTable: "reasons",
                         principalColumn: "reason_id",
                         onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "managers",
+                columns: table => new
+                {
+                    manager_id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    manager_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    user_id = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_managers", x => x.manager_id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "users",
+                columns: table => new
+                {
+                    user_id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    user_email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    user_password = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    analyst_id = table.Column<long>(type: "bigint", nullable: true),
+                    manager_id = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_users", x => x.user_id);
+                    table.ForeignKey(
+                        name: "FK_users_analysts_analyst_id",
+                        column: x => x.analyst_id,
+                        principalTable: "analysts",
+                        principalColumn: "analyst_id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_users_managers_manager_id",
+                        column: x => x.manager_id,
+                        principalTable: "managers",
+                        principalColumn: "manager_id",
+                        onDelete: ReferentialAction.SetNull);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -209,20 +203,68 @@ namespace CallTrack.Data.Migrations
                 column: "analyst_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_calls_reason_id",
+                table: "calls",
+                column: "reason_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_managers_user_id",
                 table: "managers",
                 column: "user_id",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_users_analyst_id",
+                table: "users",
+                column: "analyst_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_users_manager_id",
+                table: "users",
+                column: "manager_id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_analysts_managers_manager_id",
+                table: "analysts",
+                column: "manager_id",
+                principalTable: "managers",
+                principalColumn: "manager_id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_analysts_users_user_id",
+                table: "analysts",
+                column: "user_id",
+                principalTable: "users",
+                principalColumn: "user_id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_managers_users_user_id",
+                table: "managers",
+                column: "user_id",
+                principalTable: "users",
+                principalColumn: "user_id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "calls");
+            migrationBuilder.DropForeignKey(
+                name: "FK_analysts_managers_manager_id",
+                table: "analysts");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_users_managers_manager_id",
+                table: "users");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_analysts_users_user_id",
+                table: "analysts");
 
             migrationBuilder.DropTable(
-                name: "analysts");
+                name: "calls");
 
             migrationBuilder.DropTable(
                 name: "reasons");
@@ -232,6 +274,9 @@ namespace CallTrack.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "users");
+
+            migrationBuilder.DropTable(
+                name: "analysts");
         }
     }
 }
