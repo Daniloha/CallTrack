@@ -1,10 +1,4 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CallTrack.Share.dtos.CallsDTO
+﻿namespace CallTrack.Share.dtos.CallsDTO
 {
     public class PostCallsDTO
     {
@@ -13,7 +7,7 @@ namespace CallTrack.Share.dtos.CallsDTO
         public long AnalystId { get; set; }
 
         public DateTime CloseDate { get; set; }
-        public DateTime OpenDate { get; set; } 
+        public DateTime OpenDate { get; set; }
         public int CallType { get; set; }
         public string Code { get; set; } = string.Empty;
         public int Status { get; set; }

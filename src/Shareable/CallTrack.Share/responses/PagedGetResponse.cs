@@ -1,7 +1,7 @@
 ﻿using CallTrack.Domain.entities;
 using CallTrack.Share.dtos.CallsDTO;
 
-namespace CallTrack.Share.responses.CallsResponse
+namespace CallTrack.Share.responses
 {
     public class PagedGetResponse<T>
     {

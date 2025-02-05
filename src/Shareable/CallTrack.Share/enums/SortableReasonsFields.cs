@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace CallTrack.Share.enums
 {
-    public enum SortableFields 
+    public enum SortableReasonsFields
     {
+        ReasonId,
+        Description
+
     }
 }

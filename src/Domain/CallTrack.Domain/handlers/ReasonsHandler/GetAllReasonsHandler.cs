@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CallTrack.Domain.entities;
 using CallTrack.Domain.services.repositories;
 using CallTrack.Share.requests.ReasonsRequest;
 using CallTrack.Share.responses.ReasonsResponse;
@@ -10,21 +11,18 @@ namespace CallTrack.Domain.handlers.ReasonsHandler
     public class GetAllReasonsHandler : BaseHandler<IReasonsRepository>, IRequestHandler<GetAllReasonsRequest, GetAllReasonsResponse>
     {
         public GetAllReasonsHandler(IReasonsRepository repository, IMapper mapper) : base(repository, mapper) { }
+
         public async Task<GetAllReasonsResponse> Handle(GetAllReasonsRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                // Obter todos os chamados do repositório
-                var reasons = await Repository.GetAllAsync();
+                // Obtém as razões com paginação e ordenação
+                var pagedReasons = await Repository.GetAllPagedAsync(request.Parameters);
 
-                List<ReasonsVO> changeReasons = new List<ReasonsVO>();
+                // Mapeia para a estrutura de resposta esperada
+                var pagedDto = pagedReasons.MapPagedList<Reasons, ReasonsVO>(Mapper);
 
-                foreach (var reason in reasons)
-                {
-                    var newReason = Mapper.Map<ReasonsVO>(reason);
-                    changeReasons.Add(newReason);
-                }
-                return new GetAllReasonsResponse(changeReasons.ToArray());
+                return new GetAllReasonsResponse(pagedDto);
             }
             catch (Exception ex)
             {

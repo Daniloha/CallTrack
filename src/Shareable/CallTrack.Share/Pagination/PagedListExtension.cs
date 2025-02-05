@@ -1,7 +1,5 @@
-﻿using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using CallTrack.Domain.entities;
-using CallTrack.Share.dtos.CallsDTO;
 
 public static class PagedListExtensions
 {

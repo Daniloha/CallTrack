@@ -19,7 +19,7 @@ public class CallTrackContext : DbContext
         base.OnModelCreating(builder);
 
         builder.ApplyConfigurationsFromAssembly(typeof(CallTrackContext).Assembly);
-       
+
 
 
         builder.Entity<Reasons>().HasData(

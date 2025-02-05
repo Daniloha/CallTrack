@@ -3,16 +3,14 @@ using CallTrack.Data.repositories;
 using CallTrack.Domain.entities;
 using CallTrack.Share.dtos.CallsDTO;
 using CallTrack.Share.requests.CallsRequest;
-using CallTrack.Share.responses.CallsResponse;
+using CallTrack.Share.responses;
 using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace CallTrack.Domain.handlers.CallsHandler
 {
     public class GetPaginatedCallsHandler : BaseHandler<ICallsRepository>, IRequestHandler<GetPaginatedCallsRequest, PagedGetResponse<GetCallsDTO>>
     {
-   
+
         public GetPaginatedCallsHandler(ICallsRepository repository, IMapper mapper) : base(repository, mapper) { }
 
         public async Task<PagedGetResponse<GetCallsDTO>> Handle(GetPaginatedCallsRequest request, CancellationToken cancellationToken)

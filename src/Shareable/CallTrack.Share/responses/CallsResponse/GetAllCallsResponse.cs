@@ -1,5 +1,4 @@
-﻿using CallTrack.Share.dtos;
-using CallTrack.Share.vos;
+﻿using CallTrack.Share.vos;
 
 namespace CallTrack.Share.responses.CallsResponse
 {

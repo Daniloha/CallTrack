@@ -1,8 +1,7 @@
-﻿using CallTrack.Domain.entities;
-using CallTrack.Share.config;
+﻿using CallTrack.Share.config;
 using CallTrack.Share.dtos.CallsDTO;
+using CallTrack.Share.enums;
 using CallTrack.Share.requests.CallsRequest;
-using CallTrack.Share.responses.CallsResponse;
 using MediatR;
 
 namespace CallTrack.Api.endpoints;
@@ -56,7 +55,7 @@ public static class CallsEndpoints
         .WithTags("Calls");
 
         // Endpoint para buscar chamados com paginação
-        app.MapGet("/calls/pagination", async (IMediator mediator, [AsParameters] CallsParameters callsParameters) =>
+        app.MapGet("/calls/pagination", async (IMediator mediator, [AsParameters] PagedParameters<SortableCallsFields> callsParameters) =>
         {
             var request = new GetPaginatedCallsRequest(callsParameters);
             var response = await mediator.Send(request);

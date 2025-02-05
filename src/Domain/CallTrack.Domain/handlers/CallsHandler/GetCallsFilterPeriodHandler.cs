@@ -3,7 +3,7 @@ using CallTrack.Data.repositories;
 using CallTrack.Domain.entities;
 using CallTrack.Share.dtos.CallsDTO;
 using CallTrack.Share.requests.CallsRequest;
-using CallTrack.Share.responses.CallsResponse;
+using CallTrack.Share.responses;
 using MediatR;
 
 namespace CallTrack.Domain.handlers.CallsHandler

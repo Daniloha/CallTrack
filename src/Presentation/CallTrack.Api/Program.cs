@@ -1,7 +1,6 @@
 using CallTrack.Api.endpoints;
 using CallTrack.Api.extensions;
 using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 

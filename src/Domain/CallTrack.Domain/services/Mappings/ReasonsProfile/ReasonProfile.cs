@@ -7,7 +7,8 @@ namespace CallTrack.Domain.services.Mappings.ReasonsProfile
     public class ReasonProfile : Profile
     {
         public ReasonProfile() { 
-            CreateMap<Reasons, ReasonsVO>().ReverseMap();
+            CreateMap<Reasons, ReasonsVO>();
+            CreateMap<ReasonsVO, Reasons>();
         }
     }
 }
