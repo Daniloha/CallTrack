@@ -2,6 +2,7 @@
 using CallTrack.Data.repositories;
 using CallTrack.Data.repositories.Implementations;
 using CallTrack.Domain.services.Mappings.CallsProfile;
+using CallTrack.Domain.services.Mappings.ReasonsProfile;
 using CallTrack.Domain.services.repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -45,6 +46,7 @@ namespace CallTrack.Api.extensions
             {
                 cfg.AddProfile(typeof(GetCallProfile));
                 cfg.AddProfile(typeof(PostCallProfile));
+                cfg.AddProfile(typeof(ReasonProfile));
 
             });
 
@@ -57,7 +59,9 @@ namespace CallTrack.Api.extensions
 
         services.AddScoped<ICallsRepository, CallsRepository>();
 
-            services.AddMediatR(cfg => 
+        services.AddScoped<IReasonsRepository, ReasonsRepository>();
+
+        services.AddMediatR(cfg => 
                         cfg.RegisterServicesFromAssembly(Assembly.Load("CallTrack.Domain")));
 
 

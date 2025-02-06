@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using CallTrack.Domain.services.repositories;
 using MediatR;
 using CallTrack.Share.dtos;

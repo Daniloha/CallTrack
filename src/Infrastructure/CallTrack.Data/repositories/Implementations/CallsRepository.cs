@@ -4,6 +4,9 @@ using CallTrack.Share.config;
 using CallTrack.Share.Filters;
 using CallTrack.Share.Sort;
 using CallTrack.Share.vos;
+using CallTrack.Share.enums;
+using CallTrack.Share.Filters.CallsFilters;
+using CallTrack.Share.Sort;
 using Microsoft.EntityFrameworkCore;
 
 namespace CallTrack.Data.repositories.Implementations
@@ -17,11 +20,11 @@ namespace CallTrack.Data.repositories.Implementations
         public async Task<Calls> GetCallById(long id)
         {
             var entity = await _context.Set<Calls>().FirstOrDefaultAsync(x => x.CallId == id);
-            if(entity == null) return null!;
+            if (entity == null) return null!;
 
             return entity;
         }
-        public async Task<PagedList<Calls>> GetCallsAsync(CallsParameters callsParameters)
+        public async Task<PagedList<Calls>> GetCallsAsync(PagedParameters<SortableCallsFields> callsParameters)
         {
             var query = _context.Set<Calls>().AsQueryable();
 

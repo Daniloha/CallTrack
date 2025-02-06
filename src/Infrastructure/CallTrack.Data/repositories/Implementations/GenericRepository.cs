@@ -1,9 +1,8 @@
-﻿using CallTrack.Data;
+﻿using CallTrack.Domain.entities;
 using CallTrack.Domain.services.repositories;
-using CallTrack.Share.dtos.CallsDTO;
-using Microsoft.AspNetCore.Mvc;
+using CallTrack.Share.config;
+using CallTrack.Share.Sort;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace CallTrack.Data.repositories.Implementations;
 

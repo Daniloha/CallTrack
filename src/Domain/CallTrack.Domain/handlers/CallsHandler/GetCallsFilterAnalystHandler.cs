@@ -4,13 +4,14 @@ using CallTrack.Domain.entities;
 using CallTrack.Share.dtos.CallsDTO;
 using CallTrack.Share.requests.CallsRequest;
 using CallTrack.Share.responses.CallsResponse;
+using CallTrack.Share.responses;
 using MediatR;
 
 namespace CallTrack.Domain.handlers.CallsHandler
 {
     public class GetCallsFilterAnalystHandler : BaseHandler<ICallsRepository>, IRequestHandler<GetCallsFilterAnalystRequest, PagedGetResponse<GetCallsDTO>>
     {
-       
+
         public GetCallsFilterAnalystHandler(ICallsRepository repository, IMapper mapper) : base(repository, mapper) { }
 
         public async Task<PagedGetResponse<GetCallsDTO>> Handle(GetCallsFilterAnalystRequest request, CancellationToken cancellationToken)

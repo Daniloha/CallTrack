@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CallTrack.Data.Migrations
 {
     [DbContext(typeof(CallTrackContext))]
-    [Migration("20250107124250_mod")]
-    partial class mod
+    [Migration("20250204040947_AddInitialUsersAndRoles")]
+    partial class AddInitialUsersAndRoles
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,6 +67,7 @@ namespace CallTrack.Data.Migrations
             modelBuilder.Entity("CallTrack.Domain.entities.Calls", b =>
                 {
                     b.Property<long>("CallId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnName("call_id");
 
@@ -115,6 +116,8 @@ namespace CallTrack.Data.Migrations
                     b.HasKey("CallId");
 
                     b.HasIndex("AnalystId");
+
+                    b.HasIndex("ReasonId");
 
                     b.ToTable("calls", (string)null);
                 });
@@ -435,6 +438,10 @@ namespace CallTrack.Data.Migrations
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("AnalystId");
+
+                    b.HasIndex("ManagerId");
+
                     b.ToTable("users", (string)null);
                 });
 
@@ -444,15 +451,13 @@ namespace CallTrack.Data.Migrations
                         .WithMany("Analysts")
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("FK_analysts_managers_ManagerId");
+                        .IsRequired();
 
                     b.HasOne("CallTrack.Domain.entities.Users", "User")
-                        .WithOne("Analyst")
+                        .WithOne()
                         .HasForeignKey("CallTrack.Domain.entities.Analyst", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("user_id");
+                        .IsRequired();
 
                     b.Navigation("Manager");
 
@@ -469,7 +474,7 @@ namespace CallTrack.Data.Migrations
 
                     b.HasOne("CallTrack.Domain.entities.Reasons", "Reasons")
                         .WithMany("Calls")
-                        .HasForeignKey("CallId")
+                        .HasForeignKey("ReasonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -481,12 +486,29 @@ namespace CallTrack.Data.Migrations
             modelBuilder.Entity("CallTrack.Domain.entities.Managers", b =>
                 {
                     b.HasOne("CallTrack.Domain.entities.Users", "User")
-                        .WithOne("Manager")
+                        .WithOne()
                         .HasForeignKey("CallTrack.Domain.entities.Managers", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CallTrack.Domain.entities.Users", b =>
+                {
+                    b.HasOne("CallTrack.Domain.entities.Analyst", "Analyst")
+                        .WithMany()
+                        .HasForeignKey("AnalystId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("CallTrack.Domain.entities.Managers", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Analyst");
+
+                    b.Navigation("Manager");
                 });
 
             modelBuilder.Entity("CallTrack.Domain.entities.Analyst", b =>
@@ -502,13 +524,6 @@ namespace CallTrack.Data.Migrations
             modelBuilder.Entity("CallTrack.Domain.entities.Reasons", b =>
                 {
                     b.Navigation("Calls");
-                });
-
-            modelBuilder.Entity("CallTrack.Domain.entities.Users", b =>
-                {
-                    b.Navigation("Analyst");
-
-                    b.Navigation("Manager");
                 });
 #pragma warning restore 612, 618
         }

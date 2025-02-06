@@ -7,11 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CallTrack.Share.Filters.CallsFilters;
+using CallTrack.Share.responses;
+using MediatR;
 
 namespace CallTrack.Share.requests.CallsRequest
 {
     public class GetCallsFilterStatusRequest : CallsFilterStatus, IRequest<PagedGetResponse<GetCallsDTO>>
     {
-    
+
     }
 }

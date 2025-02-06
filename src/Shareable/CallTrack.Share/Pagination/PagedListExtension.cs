@@ -2,6 +2,8 @@
 using AutoMapper;
 using CallTrack.Domain.entities;
 using CallTrack.Share.dtos.CallsDTO;
+﻿using AutoMapper;
+using CallTrack.Domain.entities;
 
 public static class PagedListExtensions
 {
